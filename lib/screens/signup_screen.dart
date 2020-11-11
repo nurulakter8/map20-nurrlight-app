@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nurrlight/controller/widget_controller.dart';
 import 'package:nurrlight/screens/signin_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -14,6 +13,13 @@ class _SignUpState extends State<SignUpScreen> {
   _Controller con;
   var formKey = GlobalKey<FormState>();
 
+  TextEditingController userNameTextEditingController =
+      new TextEditingController();
+  TextEditingController emailTextEditingController =
+      new TextEditingController();
+  TextEditingController passwordTextEditingController =
+      new TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -23,7 +29,14 @@ class _SignUpState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarMain(context),
+      appBar: AppBar(
+        title: Image.asset(
+          "assets/images/barLogo.png",
+          height: 50,
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+      ),
       body: SingleChildScrollView(
         child: Form(
           key: formKey,
@@ -36,29 +49,44 @@ class _SignUpState extends State<SignUpScreen> {
               TextFormField(
                 decoration: InputDecoration(
                   hintText: 'UserName',
+                  fillColor: Colors.brown[100],
+                  filled: true,
+                  focusColor: Colors.brown[100],
                 ),
                 keyboardType: TextInputType.emailAddress,
                 autocorrect: false,
                 validator: con.validatorUsername,
                 onSaved: con.onSavedUserName,
+                style: TextStyle(color: Colors.brown[300]),
+                controller: userNameTextEditingController,
               ),
               TextFormField(
                 decoration: InputDecoration(
                   hintText: 'Email',
+                  fillColor: Colors.brown[100],
+                  filled: true,
+                  focusColor: Colors.brown[100],
                 ),
                 keyboardType: TextInputType.emailAddress,
                 autocorrect: false,
                 validator: con.validatorEmail,
                 onSaved: con.onSavedEmail,
+                style: TextStyle(color: Colors.brown[300]),
+                controller: emailTextEditingController,
               ),
               TextFormField(
                 decoration: InputDecoration(
                   hintText: 'Password',
+                  fillColor: Colors.brown[100],
+                  filled: true,
+                  focusColor: Colors.brown[100],
                 ),
                 obscureText: true,
                 autocorrect: false,
                 validator: con.validatorPassword,
                 onSaved: con.onSavedPassword,
+                style: TextStyle(color: Colors.brown[300]),
+                controller: passwordTextEditingController,
               ),
               RaisedButton(
                 child: Text(

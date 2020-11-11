@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nurrlight/controller/widget_controller.dart';
+import 'package:nurrlight/screens/forgotpassword_screen.dart';
 import 'package:nurrlight/screens/signup_screen.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -44,20 +45,28 @@ class _SignInState extends State<SignInScreen> {
                   // text field form for email
                   decoration: InputDecoration(
                     hintText: 'Email',
+                    fillColor: Colors.brown[100],
+                    filled: true,
+                    focusColor: Colors.brown[100],
                   ),
                   keyboardType: TextInputType.emailAddress,
                   autocorrect: false,
                   validator: con.validatorEmail, // function
                   onSaved: con.onSavedEmail, // function
+                  style: TextStyle(color: Colors.brown[300]),
                 ),
                 TextFormField(
                   decoration: InputDecoration(
                     hintText: 'Password',
+                    fillColor: Colors.brown[100],
+                    filled: true,
+                    focusColor: Colors.brown[100],
                   ),
                   obscureText: true, // sucures text
                   autocorrect: false,
                   validator: con.validatorPassword, // function
                   onSaved: con.onSavedPassword, // function
+                  style: TextStyle(color: Colors.brown[300]),
                 ),
                 // forgot password
                 SizedBox(height: 5),
@@ -116,7 +125,9 @@ class _Controller {
 
   void signIn() {}
 
-  void forgotPassword() {}
+  void forgotPassword() {
+    Navigator.pushNamed(_state.context, ForgotPasswordScreen.routeName);
+  }
 
   void onSavedPassword(String value) {
     password = value;

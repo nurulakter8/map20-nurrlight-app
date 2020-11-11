@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:nurrlight/controller/widget_controller.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   static const routeName = '/signInScreen/forgotPasswordScreen';
@@ -24,7 +25,9 @@ class _ForgotPasswordState extends State<ForgotPasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Forgot Password"),
+        title: Image.asset("assets/images/barLogo.png", height: 50,),
+        centerTitle: true,
+        backgroundColor: Colors.white,
       ),
       body: Center(
         child: Padding(
@@ -43,13 +46,16 @@ class _ForgotPasswordState extends State<ForgotPasswordScreen> {
                 SizedBox(height: 20),
                 Theme(
                   data: ThemeData(
-                    hintColor: Colors.blue,
+                    hintColor: Colors.brown[300],
                   ),
                   child: TextFormField(
                     validator: con.validatorEmail,
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.brown[300]),
                     decoration: InputDecoration(
                       labelText: 'Email',
+                      fillColor: Colors.brown[100],
+                      filled: true,
+                      focusColor: Colors.brown[100],
                     ),
                     keyboardType: TextInputType.emailAddress,
                     autocorrect: false,
@@ -62,7 +68,7 @@ class _ForgotPasswordState extends State<ForgotPasswordScreen> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    color: Colors.blue[300],
+                    color: Colors.brown[300],
                     child: Text(
                       'Send Email',
                       style: TextStyle(
@@ -98,24 +104,24 @@ class _Controller {
   }
 
   Future<void> sendEmail() async {
-  //   try {
-  //     if (_state.formKey.currentState.validate()) {
-  //       FirebaseAuth.instance.sendPasswordResetEmail(email: email).then(
-  //             (value) => MyDialog.info(
-  //               context: _state.context,
-  //               title: 'Email Sent!!',
-  //               content: 'Please check your email. Thank you!',
-  //             ),
-  //           );
-  //       //print('Email Sent! Please check your email')
-  //     }
-  //   } catch (e) {
-  //     MyDialog.info(
-  //       context: _state.context,
-  //       title: 'Error sending email',
-  //       content: e.message ?? e.toString(),
-  //     );
-  //     return;
-  //   }
-   }
+    //   try {
+    //     if (_state.formKey.currentState.validate()) {
+    //       FirebaseAuth.instance.sendPasswordResetEmail(email: email).then(
+    //             (value) => MyDialog.info(
+    //               context: _state.context,
+    //               title: 'Email Sent!!',
+    //               content: 'Please check your email. Thank you!',
+    //             ),
+    //           );
+    //       //print('Email Sent! Please check your email')
+    //     }
+    //   } catch (e) {
+    //     MyDialog.info(
+    //       context: _state.context,
+    //       title: 'Error sending email',
+    //       content: e.message ?? e.toString(),
+    //     );
+    //     return;
+    //   }
+  }
 }
