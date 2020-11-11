@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:nurrlight/screens/forgotpassword_screen.dart';
 import 'package:nurrlight/screens/signin_screen.dart';
+import 'package:nurrlight/screens/signup_screen.dart';
 
 void main() {
   runApp(NurrLightApp());
@@ -18,6 +20,8 @@ class NurrLightApp extends StatelessWidget {
         initialRoute: SignInScreen.routeName,
         routes: {
           SignInScreen.routeName: (context) => SignInScreen(),
+          SignUpScreen.routeName: (context) => SignUpScreen(),
+          ForgotPasswordScreen.routeName: (context) => ForgotPasswordScreen(),
         });
   }
 }
