@@ -98,7 +98,7 @@ class _SignInState extends State<SignInScreen> {
                 FlatButton(
                   onPressed: con.signUp,
                   child: Text(
-                    'No account yet? Click here to create',
+                    'No account yet? Register Now',
                     style: TextStyle(fontSize: 15),
                   ),
                 ),
@@ -122,7 +122,7 @@ class _Controller {
 
   void signIn() {
     if (_state.formKey.currentState.validate()){
-
+      
     }
   }
 

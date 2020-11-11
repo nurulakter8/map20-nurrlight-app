@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:nurrlight/controller/authmethods_controller.dart';
 import 'package:nurrlight/screens/signin_screen.dart';
 
+import 'homefeed_screen.dart';
+
 class SignUpScreen extends StatefulWidget {
   static const routeName = '/signInScreen/signUpScreen';
   @override
@@ -136,7 +138,8 @@ class _Controller {
       _state.authMethodsController
           .signUpWithEmailAndPassword(_state.emailTextEditingController.text,
               _state.passwordTextEditingController.text)
-          .then((value) => print('$value'));
+          .then((value) => //print('${value.uId}'));
+          Navigator.pushNamed(_state.context, HomeFeedScreen.routeName));
     }
   }
 
