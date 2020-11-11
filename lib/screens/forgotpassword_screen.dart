@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nurrlight/screens/views/messagebox.dart';
+
 class ForgotPasswordScreen extends StatefulWidget {
   static const routeName = '/signInScreen/forgotPasswordScreen';
 
@@ -25,7 +26,10 @@ class _ForgotPasswordState extends State<ForgotPasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Image.asset("assets/images/barLogo.png", height: 50,),
+        title: Image.asset(
+          "assets/images/barLogo.png",
+          height: 50,
+        ),
         centerTitle: true,
         backgroundColor: Colors.white,
       ),
@@ -104,24 +108,24 @@ class _Controller {
   }
 
   Future<void> sendEmail() async {
-      try {
-        if (_state.formKey.currentState.validate()) {
-          FirebaseAuth.instance.sendPasswordResetEmail(email: email).then(
-                (value) => MessageBox.info(
-                  context: _state.context,
-                  title: 'Email Sent!!',
-                  content: 'Please check your email. Thank you!',
-                ),
-              );
-          //print('Email Sent! Please check your email')
-        }
-      } catch (e) {
-        MessageBox.info(
-          context: _state.context,
-          title: 'Error sending email',
-          content: e.message ?? e.toString(),
-        );
-        return;
+    try {
+      if (_state.formKey.currentState.validate()) {
+        FirebaseAuth.instance.sendPasswordResetEmail(email: email).then(
+              (value) => MessageBox.info(
+                context: _state.context,
+                title: 'Email Sent!!',
+                content: 'Please check your email. Thank you!',
+              ),
+            );
+        //print('Email Sent! Please check your email')
       }
+    } catch (e) {
+      MessageBox.info(
+        context: _state.context,
+        title: 'Error sending email',
+        content: e.message ?? e.toString(),
+      );
+      return;
+    }
   }
 }

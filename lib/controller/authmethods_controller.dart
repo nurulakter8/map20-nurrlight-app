@@ -3,13 +3,13 @@ import 'package:nurrlight/model/user.dart';
 
 class AuthMethodsController{
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  static final FirebaseAuth _auth = FirebaseAuth.instance;
   
-  User _userFromFirebaseUser(FirebaseUser user){
+  static User _userFromFirebaseUser(FirebaseUser user){
     return user != null ? User(UserID: user.uid) : null;
   }
   
-  Future signInWithEmailAndPassword (String email, String password) async{
+  static Future signInWithEmailAndPassword (String email, String password) async{
 
     try {
       AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
