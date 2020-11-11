@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nurrlight/controller/authmethods_controller.dart';
 import 'package:nurrlight/screens/signin_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -12,6 +13,8 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpState extends State<SignUpScreen> {
   _Controller con;
   var formKey = GlobalKey<FormState>();
+  bool isLoading = false;
+  AuthMethodsController authMethodsController = new AuthMethodsController();
 
   TextEditingController userNameTextEditingController =
       new TextEditingController();
@@ -37,80 +40,85 @@ class _SignUpState extends State<SignUpScreen> {
         centerTitle: true,
         backgroundColor: Colors.white,
       ),
-      body: SingleChildScrollView(
-        child: Form(
-          key: formKey,
-          child: Column(
-            children: <Widget>[
-              Text(
-                'Create an account',
-                style: TextStyle(fontSize: 25),
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'UserName',
-                  fillColor: Colors.brown[100],
-                  filled: true,
-                  focusColor: Colors.brown[100],
+      body: isLoading
+          ? Container(
+              // after valid signup show progress indicator
+              child: Center(child: CircularProgressIndicator()),
+            )
+          : SingleChildScrollView(
+              child: Form(
+                key: formKey,
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      'Create an account',
+                      style: TextStyle(fontSize: 25),
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        hintText: 'UserName',
+                        fillColor: Colors.brown[100],
+                        filled: true,
+                        focusColor: Colors.brown[100],
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                      autocorrect: false,
+                      validator: con.validatorUsername,
+                      onSaved: con.onSavedUserName,
+                      style: TextStyle(color: Colors.brown[300]),
+                      controller: userNameTextEditingController,
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        hintText: 'Email',
+                        fillColor: Colors.brown[100],
+                        filled: true,
+                        focusColor: Colors.brown[100],
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                      autocorrect: false,
+                      validator: con.validatorEmail,
+                      onSaved: con.onSavedEmail,
+                      style: TextStyle(color: Colors.brown[300]),
+                      controller: emailTextEditingController,
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        hintText: 'Password',
+                        fillColor: Colors.brown[100],
+                        filled: true,
+                        focusColor: Colors.brown[100],
+                      ),
+                      obscureText: true,
+                      autocorrect: false,
+                      validator: con.validatorPassword,
+                      onSaved: con.onSavedPassword,
+                      style: TextStyle(color: Colors.brown[300]),
+                      controller: passwordTextEditingController,
+                    ),
+                    RaisedButton(
+                      child: Text(
+                        'Create',
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      ),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                          side: BorderSide(color: Colors.brown[300])),
+                      color: Colors.brown[300],
+                      onPressed: con.signUp,
+                    ),
+                    SizedBox(height: 30),
+                    FlatButton(
+                      onPressed: con.signIn,
+                      child: Text(
+                        'Already have an account? Click here to Sign In',
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    ),
+                  ],
                 ),
-                keyboardType: TextInputType.emailAddress,
-                autocorrect: false,
-                validator: con.validatorUsername,
-                onSaved: con.onSavedUserName,
-                style: TextStyle(color: Colors.brown[300]),
-                controller: userNameTextEditingController,
               ),
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'Email',
-                  fillColor: Colors.brown[100],
-                  filled: true,
-                  focusColor: Colors.brown[100],
-                ),
-                keyboardType: TextInputType.emailAddress,
-                autocorrect: false,
-                validator: con.validatorEmail,
-                onSaved: con.onSavedEmail,
-                style: TextStyle(color: Colors.brown[300]),
-                controller: emailTextEditingController,
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'Password',
-                  fillColor: Colors.brown[100],
-                  filled: true,
-                  focusColor: Colors.brown[100],
-                ),
-                obscureText: true,
-                autocorrect: false,
-                validator: con.validatorPassword,
-                onSaved: con.onSavedPassword,
-                style: TextStyle(color: Colors.brown[300]),
-                controller: passwordTextEditingController,
-              ),
-              RaisedButton(
-                child: Text(
-                  'Create',
-                  style: TextStyle(fontSize: 20, color: Colors.white),
-                ),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
-                    side: BorderSide(color: Colors.brown[300])),
-                color: Colors.brown[300],
-                onPressed: con.signUp,
-              ),
-              SizedBox(height: 30),
-              FlatButton(
-                onPressed: con.signIn,
-                child: Text(
-                  'Already have an account? Click here to Sign In',
-                  style: TextStyle(fontSize: 15),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 }
@@ -122,17 +130,26 @@ class _Controller {
   String password;
   String userName;
 
-  void signUp() async {}
+  void signUp() async {
+    if (_state.formKey.currentState.validate()) {
+      _state.isLoading = true;
+      _state.authMethodsController
+          .signUpWithEmailAndPassword(_state.emailTextEditingController.text,
+              _state.passwordTextEditingController.text)
+          .then((value) => print('$value'));
+    }
+  }
 
   void signIn() {
     Navigator.pushNamed(_state.context, SignInScreen.routeName);
   }
 
   String validatorEmail(String value) {
-    if (value.contains('@') && value.contains('.'))
-      return null;
-    else
-      return 'Invalied Email';
+    return RegExp(
+                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+            .hasMatch(value)
+        ? null
+        : "Please Enter Correct Email";
   }
 
   void onSavedEmail(String value) {

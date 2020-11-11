@@ -1,7 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:nurrlight/controller/widget_controller.dart';
-
+import 'package:nurrlight/screens/views/messagebox.dart';
 class ForgotPasswordScreen extends StatefulWidget {
   static const routeName = '/signInScreen/forgotPasswordScreen';
 
@@ -104,24 +104,24 @@ class _Controller {
   }
 
   Future<void> sendEmail() async {
-    //   try {
-    //     if (_state.formKey.currentState.validate()) {
-    //       FirebaseAuth.instance.sendPasswordResetEmail(email: email).then(
-    //             (value) => MyDialog.info(
-    //               context: _state.context,
-    //               title: 'Email Sent!!',
-    //               content: 'Please check your email. Thank you!',
-    //             ),
-    //           );
-    //       //print('Email Sent! Please check your email')
-    //     }
-    //   } catch (e) {
-    //     MyDialog.info(
-    //       context: _state.context,
-    //       title: 'Error sending email',
-    //       content: e.message ?? e.toString(),
-    //     );
-    //     return;
-    //   }
+      try {
+        if (_state.formKey.currentState.validate()) {
+          FirebaseAuth.instance.sendPasswordResetEmail(email: email).then(
+                (value) => MessageBox.info(
+                  context: _state.context,
+                  title: 'Email Sent!!',
+                  content: 'Please check your email. Thank you!',
+                ),
+              );
+          //print('Email Sent! Please check your email')
+        }
+      } catch (e) {
+        MessageBox.info(
+          context: _state.context,
+          title: 'Error sending email',
+          content: e.message ?? e.toString(),
+        );
+        return;
+      }
   }
 }

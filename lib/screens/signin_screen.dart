@@ -26,8 +26,6 @@ class _SignInState extends State<SignInScreen> {
     return Scaffold(
       appBar: appBarMain(context),
       body: SingleChildScrollView(
-        child: Container(
-          height: MediaQuery.of(context).size.height - 50,
           child: Form(
             // form widget, need to set up a form key, "formKey"
             key: formKey, // thats the key we set up
@@ -105,7 +103,6 @@ class _SignInState extends State<SignInScreen> {
                   ),
                 ),
               ],
-            ),
           ),
         ),
       ),
@@ -123,7 +120,11 @@ class _Controller {
     Navigator.pushNamed(_state.context, SignUpScreen.routeName);
   }
 
-  void signIn() {}
+  void signIn() {
+    if (_state.formKey.currentState.validate()){
+
+    }
+  }
 
   void forgotPassword() {
     Navigator.pushNamed(_state.context, ForgotPasswordScreen.routeName);
@@ -147,10 +148,10 @@ class _Controller {
 
   String validatorEmail(String value) {
     // validating email
-    if (value == null || !value.contains('@') || !value.contains('.')) {
-      return 'Invalid email address';
-    } else {
-      return null;
-    }
+        return RegExp(
+                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+            .hasMatch(value)
+        ? null
+        : "Please Enter Correct Email";
   }
 }
