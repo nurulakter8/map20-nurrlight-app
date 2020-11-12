@@ -34,87 +34,90 @@ class _SignInState extends State<SignInScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       //appBar: appBarMain(context),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Form(
-            // form widget, need to set up a form key, "formKey"
-            key: formKey, // thats the key we set up
-            child: Column(
-              children: <Widget>[
-                Stack(
-                  // stacking widgeds to have it lay top of each other
-                  children: <Widget>[
-                    // add images top of text form
-                    Image.asset('assets/images/logo.png'),
-                    // additional custom text
-                  ],
-                ),
-                TextFormField(
-                  // text field form for email
-                  decoration: InputDecoration(
-                    hintText: 'Email',
-                    fillColor: Colors.brown[100],
-                    filled: true,
-                    focusColor: Colors.brown[100],
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(0,0,0,70),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Form(
+              // form widget, need to set up a form key, "formKey"
+              key: formKey, // thats the key we set up
+              child: Column(
+                children: <Widget>[
+                  Stack(
+                    // stacking widgeds to have it lay top of each other
+                    children: <Widget>[
+                      // add images top of text form
+                      Image.asset('assets/images/logo.png'),
+                      // additional custom text
+                    ],
                   ),
-                  keyboardType: TextInputType.emailAddress,
-                  autocorrect: false,
-                  validator: con.validatorEmail, // function
-                  onSaved: con.onSavedEmail, // function
-                  style: TextStyle(color: Colors.brown[300]),
-                  controller: emailEditingController,
-                ),
-                TextFormField(
-                  decoration: InputDecoration(
-                    hintText: 'Password',
-                    fillColor: Colors.brown[100],
-                    filled: true,
-                    focusColor: Colors.brown[100],
+                  TextFormField(
+                    // text field form for email
+                    decoration: InputDecoration(
+                      hintText: 'Email',
+                      fillColor: Colors.brown[100],
+                      filled: true,
+                      focusColor: Colors.brown[100],
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                    autocorrect: false,
+                    validator: con.validatorEmail, // function
+                    onSaved: con.onSavedEmail, // function
+                    style: TextStyle(color: Colors.brown[300]),
+                    controller: emailEditingController,
                   ),
-                  obscureText: true, // sucures text
-                  autocorrect: false,
-                  validator: con.validatorPassword, // function
-                  onSaved: con.onSavedPassword, // function
-                  style: TextStyle(color: Colors.brown[300]),
-                  controller: passwordEditingController,
-                ),
-                // forgot password
-                SizedBox(height: 5),
-                Padding(
-                  padding: EdgeInsets.only(right: 20),
-                  child: Container(
-                    width: double.infinity,
-                    child: InkWell(
-                      onTap: con.forgotPassword,
-                      child: Text(
-                        'Forgot Password?',
-                        style: TextStyle(color: Colors.brown[300]),
-                        textAlign: TextAlign.right,
+                  TextFormField(
+                    decoration: InputDecoration(
+                      hintText: 'Password',
+                      fillColor: Colors.brown[100],
+                      filled: true,
+                      focusColor: Colors.brown[100],
+                    ),
+                    obscureText: true, // sucures text
+                    autocorrect: false,
+                    validator: con.validatorPassword, // function
+                    onSaved: con.onSavedPassword, // function
+                    style: TextStyle(color: Colors.brown[300]),
+                    controller: passwordEditingController,
+                  ),
+                  // forgot password
+                  SizedBox(height: 5),
+                  Padding(
+                    padding: EdgeInsets.only(right: 20),
+                    child: Container(
+                      width: double.infinity,
+                      child: InkWell(
+                        onTap: con.forgotPassword,
+                        child: Text(
+                          'Forgot Password?',
+                          style: TextStyle(color: Colors.brown[300]),
+                          textAlign: TextAlign.right,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                RaisedButton(
-                  child: Text(
-                    "Sign In",
-                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  RaisedButton(
+                    child: Text(
+                      "Sign In",
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    ),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                        side: BorderSide(color: Colors.brown[300])),
+                    color: Colors.brown[300],
+                    onPressed: con.signIn, // function
                   ),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                      side: BorderSide(color: Colors.brown[300])),
-                  color: Colors.brown[300],
-                  onPressed: con.signIn, // function
-                ),
 
-                SizedBox(height: 30),
-                FlatButton(
-                  onPressed: con.signUp,
-                  child: Text(
-                    'No account yet? Register Now',
-                    style: TextStyle(fontSize: 15),
+                  SizedBox(height: 30),
+                  FlatButton(
+                    onPressed: con.signUp,
+                    child: Text(
+                      'No account yet? Register Now',
+                      style: TextStyle(fontSize: 15),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
