@@ -47,80 +47,83 @@ class _SignUpState extends State<SignUpScreen> {
               // after valid signup show progress indicator
               child: Center(child: CircularProgressIndicator()),
             )
-          : SingleChildScrollView(
-              child: Form(
-                key: formKey,
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      'Create an account',
-                      style: TextStyle(fontSize: 25),
-                    ),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        hintText: 'UserName',
-                        fillColor: Colors.brown[100],
-                        filled: true,
-                        focusColor: Colors.brown[100],
+          : Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: SingleChildScrollView(
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        'Create an account',
+                        style: TextStyle(fontSize: 25),
                       ),
-                      keyboardType: TextInputType.emailAddress,
-                      autocorrect: false,
-                      validator: con.validatorUsername,
-                      onSaved: con.onSavedUserName,
-                      style: TextStyle(color: Colors.brown[300]),
-                      controller: userNameTextEditingController,
-                    ),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        hintText: 'Email',
-                        fillColor: Colors.brown[100],
-                        filled: true,
-                        focusColor: Colors.brown[100],
+                      TextFormField(
+                        decoration: InputDecoration(
+                          hintText: 'UserName',
+                          fillColor: Colors.brown[100],
+                          filled: true,
+                          focusColor: Colors.brown[100],
+                        ),
+                        keyboardType: TextInputType.emailAddress,
+                        autocorrect: false,
+                        validator: con.validatorUsername,
+                        onSaved: con.onSavedUserName,
+                        style: TextStyle(color: Colors.brown[300]),
+                        controller: userNameTextEditingController,
                       ),
-                      keyboardType: TextInputType.emailAddress,
-                      autocorrect: false,
-                      validator: con.validatorEmail,
-                      onSaved: con.onSavedEmail,
-                      style: TextStyle(color: Colors.brown[300]),
-                      controller: emailTextEditingController,
-                    ),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        hintText: 'Password',
-                        fillColor: Colors.brown[100],
-                        filled: true,
-                        focusColor: Colors.brown[100],
+                      TextFormField(
+                        decoration: InputDecoration(
+                          hintText: 'Email',
+                          fillColor: Colors.brown[100],
+                          filled: true,
+                          focusColor: Colors.brown[100],
+                        ),
+                        keyboardType: TextInputType.emailAddress,
+                        autocorrect: false,
+                        validator: con.validatorEmail,
+                        onSaved: con.onSavedEmail,
+                        style: TextStyle(color: Colors.brown[300]),
+                        controller: emailTextEditingController,
                       ),
-                      obscureText: true,
-                      autocorrect: false,
-                      validator: con.validatorPassword,
-                      onSaved: con.onSavedPassword,
-                      style: TextStyle(color: Colors.brown[300]),
-                      controller: passwordTextEditingController,
-                    ),
-                    RaisedButton(
-                      child: Text(
-                        'Create',
-                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      TextFormField(
+                        decoration: InputDecoration(
+                          hintText: 'Password',
+                          fillColor: Colors.brown[100],
+                          filled: true,
+                          focusColor: Colors.brown[100],
+                        ),
+                        obscureText: true,
+                        autocorrect: false,
+                        validator: con.validatorPassword,
+                        onSaved: con.onSavedPassword,
+                        style: TextStyle(color: Colors.brown[300]),
+                        controller: passwordTextEditingController,
                       ),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                          side: BorderSide(color: Colors.brown[300])),
-                      color: Colors.brown[300],
-                      onPressed: con.signUp,
-                    ),
-                    SizedBox(height: 30),
-                    FlatButton(
-                      onPressed: con.signIn,
-                      child: Text(
-                        'Already have an account? Click here to Sign In',
-                        style: TextStyle(fontSize: 15),
+                      RaisedButton(
+                        child: Text(
+                          'Create',
+                          style: TextStyle(fontSize: 20, color: Colors.white),
+                        ),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                            side: BorderSide(color: Colors.brown[300])),
+                        color: Colors.brown[300],
+                        onPressed: con.signUp,
                       ),
-                    ),
-                  ],
+                      SizedBox(height: 30),
+                      FlatButton(
+                        onPressed: con.signIn,
+                        child: Text(
+                          'Already have an account? Click here to Sign In',
+                          style: TextStyle(fontSize: 15),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
+          ),
     );
   }
 }

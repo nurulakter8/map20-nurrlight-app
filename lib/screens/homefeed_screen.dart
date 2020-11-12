@@ -95,6 +95,7 @@ class _HomeState extends State<HomeFeedScreen> {
           ),
         ),
       ),
+      body: Center(child: Text("Welcome!!",style: TextStyle(fontSize: 40),),),
     );
   }
 }
