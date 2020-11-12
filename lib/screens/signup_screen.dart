@@ -139,7 +139,7 @@ class _Controller {
           .signUpWithEmailAndPassword(_state.emailTextEditingController.text,
               _state.passwordTextEditingController.text)
           .then((value) => //print('${value.uId}'));
-          Navigator.pushNamed(_state.context, HomeFeedScreen.routeName));
+          Navigator.pushNamed(_state.context, SignInScreen.routeName));
     }
   }
 
