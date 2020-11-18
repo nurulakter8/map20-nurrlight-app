@@ -4,7 +4,6 @@ import 'package:nurrlight/controller/authmethods_controller.dart';
 import 'package:nurrlight/controller/data_controller.dart';
 import 'package:nurrlight/model/user.dart';
 import 'package:nurrlight/screens/homefeed_screen.dart';
-import 'package:nurrlight/screens/search_screen.dart';
 import 'package:nurrlight/screens/signin_screen.dart';
 
 import 'chatroom_screen.dart';
@@ -88,7 +87,7 @@ class _UserSearchState extends State<UserSearchScreen> {
                 child: DrawerHeader(
                     child: Center(
                         child: Text(
-                  'User Id: ${user.UserID}',
+                  'User: ${user.UserID.toString()}',
                   textAlign: TextAlign.center,
                 ))),
                 color: Colors.grey[400],

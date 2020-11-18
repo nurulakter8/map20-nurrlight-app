@@ -3,7 +3,6 @@ import 'package:nurrlight/controller/authmethods_controller.dart';
 import 'package:nurrlight/controller/data_controller.dart';
 import 'package:nurrlight/screens/signin_screen.dart';
 
-import 'homefeed_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   static const routeName = '/signInScreen/signUpScreen';
