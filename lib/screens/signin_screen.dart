@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nurrlight/controller/authmethods_controller.dart';
+import 'package:nurrlight/controller/data_controller.dart';
 import 'package:nurrlight/controller/widget_controller.dart';
+import 'package:nurrlight/model/feedphotos.dart';
 import 'package:nurrlight/screens/forgotpassword_screen.dart';
 import 'package:nurrlight/screens/signup_screen.dart';
 import 'package:nurrlight/screens/views/messagebox.dart';
@@ -35,7 +37,7 @@ class _SignInState extends State<SignInScreen> {
     return Scaffold(
       //appBar: appBarMain(context),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(0,0,0,70),
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 70),
         child: Center(
           child: SingleChildScrollView(
             child: Form(
@@ -137,7 +139,6 @@ class _Controller {
   }
 
   Future<void> signIn() async {
-
     try {
       if (_state.formKey.currentState.validate()) {
         _state.isLoading = true;
@@ -147,8 +148,23 @@ class _Controller {
                 _state.passwordEditingController.text)
             .then((result) async {
           if (result != null) {
-            Navigator.pushReplacementNamed(
-                _state.context, HomeFeedScreen.routeName);
+            // read all the feedPhoto data
+            try {
+              List<FeedPhotos> feedPhotos = await DataController.getPhotoMemos(
+                  _state.emailEditingController.text);
+              print("+++++++++++++++++");
+              print(feedPhotos.toString());
+              // go to home feed page
+              Navigator.pushReplacementNamed(
+                  _state.context, HomeFeedScreen.routeName,
+                  arguments: {'feedPhotoList': feedPhotos});
+            } catch (e) {
+              MessageBox.info(
+                context: _state.context,
+                title: 'Error accesing Info',
+                content: e.message ?? e.toString(),
+              );
+            }
           } else {
             _state.isLoading = false;
             MessageBox.info(
