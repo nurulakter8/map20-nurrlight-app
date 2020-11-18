@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nurrlight/controller/authmethods_controller.dart';
+import 'package:nurrlight/controller/data_controller.dart';
 import 'package:nurrlight/screens/signin_screen.dart';
 
 import 'homefeed_screen.dart';
@@ -17,6 +18,7 @@ class _SignUpState extends State<SignUpScreen> {
   var formKey = GlobalKey<FormState>();
   bool isLoading = false;
   AuthMethodsController authMethodsController = new AuthMethodsController();
+  DataController dataController = new DataController();
 
   TextEditingController userNameTextEditingController =
       new TextEditingController();
@@ -141,8 +143,17 @@ class _Controller {
       _state.authMethodsController
           .signUpWithEmailAndPassword(_state.emailTextEditingController.text,
               _state.passwordTextEditingController.text)
-          .then((value) => //print('${value.uId}'));
-          Navigator.pushNamed(_state.context, SignInScreen.routeName));
+          .then((value){
+            Map<String, String> userInfoMap = {
+              "name" : _state.userNameTextEditingController.text,
+              "email": _state.emailTextEditingController.text,
+            };
+
+            _state.dataController.uploadUserInfo(userInfoMap);
+            Navigator.pushNamed(_state.context, SignInScreen.routeName);
+
+          } //print('${value.uId}'));
+          );
     }
   }
 

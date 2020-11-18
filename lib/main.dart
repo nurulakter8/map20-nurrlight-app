@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nurrlight/screens/chatroom_screen.dart';
 import 'package:nurrlight/screens/forgotpassword_screen.dart';
 import 'package:nurrlight/screens/homefeed_screen.dart';
 import 'package:nurrlight/screens/search_screen.dart';
@@ -28,6 +29,8 @@ class NurrLightApp extends StatelessWidget {
           HomeFeedScreen.routeName: (context) => HomeFeedScreen(),
           SearchScreen.routeName: (context) => SearchScreen(),
           UserSearchScreen.routeName: (context) => UserSearchScreen(),
+          ChatroomScreen.routeName: (context) => ChatroomScreen(),
+
         });
   }
 }

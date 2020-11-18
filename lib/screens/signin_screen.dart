@@ -137,26 +137,7 @@ class _Controller {
   }
 
   Future<void> signIn() async {
-    // if (!_state.formKey.currentState.validate()) {
-    //   return; // if not valid then just return
-    // }
-    // _state.formKey.currentState
-    //     .save(); // saves email and password by calling save function
 
-    // FirebaseUser user; // declaring user here to save firebase user info
-    // try {
-    //   user = await AuthMethodsController.signInWithEmailAndPassword(
-    //       email, password); // try to sign in using firebase user
-    //   print("user: $user");
-    //   Navigator.pushReplacementNamed(_state.context, HomeFeedScreen.routeName);
-    // } catch (e) {
-    //   MessageBox.info(
-    //     context: _state.context,
-    //     title: 'Sign in Error',
-    //     content: e.message ?? e.toString(),
-    //   );
-    //   return;
-    // }
     try {
       if (_state.formKey.currentState.validate()) {
         _state.isLoading = true;
