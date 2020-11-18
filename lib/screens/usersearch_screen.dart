@@ -3,18 +3,17 @@ import 'package:nurrlight/controller/authmethods_controller.dart';
 import 'package:nurrlight/model/user.dart';
 import 'package:nurrlight/screens/homefeed_screen.dart';
 import 'package:nurrlight/screens/signin_screen.dart';
-import 'package:nurrlight/screens/usersearch_screen.dart';
 
-class SearchScreen extends StatefulWidget {
-  static const routeName = '/homeScreen/searchScreen';
+class UserSearchScreen extends StatefulWidget {
+  static const routeName = '/searchScreen/userSearchScreen';
 
   @override
   State<StatefulWidget> createState() {
-    return _SearchState();
+    return _UserSearchState();
   }
 }
 
-class _SearchState extends State<SearchScreen> {
+class _UserSearchState extends State<UserSearchScreen> {
   _Controller con;
   AuthMethodsController authMethodsController = new AuthMethodsController();
   User user = new User();
@@ -96,21 +95,38 @@ class _SearchState extends State<SearchScreen> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(320, 490, 10, 10),
-        child: FloatingActionButton(
-          onPressed: ()=> Navigator.pushNamed(context, UserSearchScreen.routeName),
-          child: Icon(Icons.search),
-          backgroundColor: Colors.brown[300],
-          
+      body: Container(
+        child: Column(
+          children: [
+            Container(
+              color: Colors.brown[300],
+              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16 ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: "Search Username...",
+                        hintStyle: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                        border: InputBorder.none
+                      ),
+                    ),
+                  ),
+                  Image.asset("assets/images.searchLogo.png"),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
-
     );
   }
 }
 
 class _Controller {
-  _SearchState _state;
+  _UserSearchState _state;
   _Controller(this._state);
 }

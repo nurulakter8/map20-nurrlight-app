@@ -4,6 +4,7 @@ import 'package:nurrlight/screens/homefeed_screen.dart';
 import 'package:nurrlight/screens/search_screen.dart';
 import 'package:nurrlight/screens/signin_screen.dart';
 import 'package:nurrlight/screens/signup_screen.dart';
+import 'package:nurrlight/screens/usersearch_screen.dart';
 
 void main() {
   runApp(NurrLightApp());
@@ -26,6 +27,7 @@ class NurrLightApp extends StatelessWidget {
           ForgotPasswordScreen.routeName: (context) => ForgotPasswordScreen(),
           HomeFeedScreen.routeName: (context) => HomeFeedScreen(),
           SearchScreen.routeName: (context) => SearchScreen(),
+          UserSearchScreen.routeName: (context) => UserSearchScreen(),
         });
   }
 }

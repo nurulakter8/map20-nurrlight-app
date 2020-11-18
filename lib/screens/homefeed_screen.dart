@@ -64,10 +64,10 @@ class _HomeState extends State<HomeFeedScreen> {
               ),
               ListTile(
                 leading: Icon(
-                  Icons.search,
+                  Icons.message,
                   color: Colors.white,
                 ),
-                title: Text('Search'),
+                title: Text('Messages'),
                 onTap: () {
                   Navigator.pushNamed(context, SearchScreen.routeName);
                 },
