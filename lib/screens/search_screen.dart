@@ -63,16 +63,16 @@ class _SearchState extends State<SearchScreen> {
                 ))),
                 color: Colors.grey[400],
               ),
-              ListTile(
-                leading: Icon(
-                  Icons.pages,
-                  color: Colors.white,
-                ),
-                title: Text('Feed'),
-                onTap: () {
-                  Navigator.pushNamed(context, HomeFeedScreen.routeName);
-                },
-              ),
+              // ListTile(
+              //   leading: Icon(
+              //     Icons.pages,
+              //     color: Colors.white,
+              //   ),
+              //   title: Text('Feed'),
+              //   onTap: () {
+              //     Navigator.pushNamed(context, HomeFeedScreen.routeName);
+              //   },
+              // ),
               ListTile(
                 leading: Icon(
                   Icons.info,

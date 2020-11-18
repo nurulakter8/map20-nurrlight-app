@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nurrlight/controller/authmethods_controller.dart';
+import 'package:nurrlight/model/feedphotos.dart';
 import 'package:nurrlight/model/user.dart';
 import 'package:nurrlight/screens/search_screen.dart';
 import 'package:nurrlight/screens/signin_screen.dart';
@@ -17,6 +18,8 @@ class _HomeState extends State<HomeFeedScreen> {
   _Controller con;
   AuthMethodsController authMethodsController = new AuthMethodsController();
   User user = new User();
+  List<FeedPhotos> feedPhotos;
+
 
   @override
   void initState() {
@@ -26,6 +29,9 @@ class _HomeState extends State<HomeFeedScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Map arg = ModalRoute.of(context).settings.arguments;
+    feedPhotos ??= arg['feedPhotoList'];
+
     return Scaffold(
       appBar: AppBar(
         title: Image.asset(
@@ -95,7 +101,7 @@ class _HomeState extends State<HomeFeedScreen> {
           ),
         ),
       ),
-      body: Center(child: Text("Welcome!!",style: TextStyle(fontSize: 40),),),
+      body: Center(child: Text("Welcome!! Number of docs ${feedPhotos.length}",style: TextStyle(fontSize: 40),),),
     );
   }
 }
