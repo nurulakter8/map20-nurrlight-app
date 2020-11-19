@@ -139,30 +139,30 @@ class _HomeState extends State<HomeFeedScreen> {
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                       child: Column(
+                        
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Row(
                             children: <Widget>[
-                              Image.network(feedPhotos[index].photoURL, width: 300.0),
+                              Image.network(feedPhotos[index].photoURL,
+                                  width: 300.0),
                               SizedBox(
                                 width: 15.0,
                               ),
                             ],
                           ),
-                           Text('Caption: ${feedPhotos[index].caption}',
-                                  style: TextStyle(
-                                    fontSize: 25.0,
-                                  )),
-                          Text('Created by: ${feedPhotos[index].createdBy}',
-                                  style: TextStyle(
-                                    fontSize: 25.0,
-                                  )),
-                          Text(
-                            'Updated at: ${feedPhotos[index].updatedAt}',
-                            style: TextStyle(
-                              fontSize: 25.0,
-                            ),
-                          ),
+                          Text('Caption: ${feedPhotos[index].caption}',
+                              style: TextStyle(
+                                fontSize: 25.0,
+                              )),
+                          Text('Author: ${feedPhotos[index].createdBy}',
+                              style: TextStyle(
+                                fontSize: 25.0,
+                              )),
+                          Text('Price: ${feedPhotos[index].price}',
+                              style: TextStyle(
+                                fontSize: 25.0,
+                              )),
                         ],
                       ),
                     ),
