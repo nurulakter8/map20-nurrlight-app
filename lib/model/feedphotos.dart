@@ -17,7 +17,7 @@ class FeedPhotos {
   String docId; // firebase doc id
   String createdBy;
   String caption;// title
-  var price; // memo
+  String price; // memo
   String
       photoPath; // path to cloud store will be stored here, firebase storage, image file name
   String photoURL; // fire base storage; image URL for internet access

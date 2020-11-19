@@ -4,6 +4,7 @@ import 'package:nurrlight/model/feedphotos.dart';
 import 'package:nurrlight/model/user.dart';
 import 'package:nurrlight/screens/search_screen.dart';
 import 'package:nurrlight/screens/signin_screen.dart';
+import 'package:nurrlight/screens/views/imageframe_view.dart';
 
 class HomeFeedScreen extends StatefulWidget {
   static const routeName = '/signInScreen/homeScreen';
@@ -19,7 +20,6 @@ class _HomeState extends State<HomeFeedScreen> {
   AuthMethodsController authMethodsController = new AuthMethodsController();
   User user = new User();
   List<FeedPhotos> feedPhotos;
-
 
   @override
   void initState() {
@@ -101,7 +101,73 @@ class _HomeState extends State<HomeFeedScreen> {
           ),
         ),
       ),
-      body: Center(child: Text("Welcome!! Number of docs ${feedPhotos.length}",style: TextStyle(fontSize: 40),),),
+      body: //Center(child: Text("Welcome!! Number of docs ${feedPhotos.length}",style: TextStyle(fontSize: 40),),),
+          feedPhotos.length == 0
+              ? Text('No Photos', style: TextStyle(fontSize: 30.0))
+              : ListView.builder(
+                  itemCount: feedPhotos.length,
+                  itemBuilder: (BuildContext context, int index) => Container(
+                    // wrapping with container for color on listtile
+                    color: con.delIndex != null && con.delIndex == index
+                        ? Colors.red[200]
+                        : Colors
+                            .white, // on long press it will turn red to delete
+                    // child: ListTile(
+                    //   //leading: Image.network(photoMemos[index].photoURL),
+                    //   leading: MyImageView.network(
+                    //       imageUrl: feedPhotos[index].photoURL,
+                    //       context:
+                    //           context), // progress indicator based on how big is each image.
+                    //   //trailing: Icon(Icons.keyboard_arrow_right),
+                    //   title: Text(feedPhotos[index].caption),
+                    //   subtitle: Column(
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: <Widget>[
+                    //       Text('Created by: ${feedPhotos[index].createdBy}'),
+                    //       Text('Updated at: ${feedPhotos[index].updatedAt}'),
+                    //       Text("Price: ${feedPhotos[index].price} dollars"),
+                    //     ],
+                    //   ),
+                    //   onTap: (){} ,// on tap funtion, part of listtile. goes to detailed page
+                    // onLongPress: () {} // on long press we will permently delete the index
+                    // ),
+                    child: Card(
+                      margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+                      color: Colors.white,
+                      elevation: 10.0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              Image.network(feedPhotos[index].photoURL, width: 300.0),
+                              SizedBox(
+                                width: 15.0,
+                              ),
+                            ],
+                          ),
+                           Text('Caption: ${feedPhotos[index].caption}',
+                                  style: TextStyle(
+                                    fontSize: 25.0,
+                                  )),
+                          Text('Created by: ${feedPhotos[index].createdBy}',
+                                  style: TextStyle(
+                                    fontSize: 25.0,
+                                  )),
+                          Text(
+                            'Updated at: ${feedPhotos[index].updatedAt}',
+                            style: TextStyle(
+                              fontSize: 25.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
     );
   }
 }
@@ -109,4 +175,5 @@ class _HomeState extends State<HomeFeedScreen> {
 class _Controller {
   _HomeState _state;
   _Controller(this._state);
+  int delIndex;
 }
