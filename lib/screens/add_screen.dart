@@ -1,8 +1,11 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nurrlight/controller/authmethods_controller.dart';
+import 'package:nurrlight/controller/data_controller.dart';
+import 'package:nurrlight/model/feedphotos.dart';
 import 'package:nurrlight/model/user.dart';
 
 class AddScreen extends StatefulWidget {
@@ -17,9 +20,13 @@ class AddScreen extends StatefulWidget {
 class _AddState extends State<AddScreen> {
   _Controller con;
   AuthMethodsController authMethodsController = new AuthMethodsController();
-  User user = new User();
+    TextEditingController emailEditingController = new TextEditingController();
+
+    //User user = new User();
   File image; // variable to upload images
-  var formkey = GlobalKey<FormState>();
+  var formkey = GlobalKey<FormState>();  
+  FirebaseUser user;
+  List<FeedPhotos> feedPhotos;
 
   @override
   void initState() {
@@ -31,6 +38,11 @@ class _AddState extends State<AddScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Map args = ModalRoute.of(context).settings.arguments;
+    user ??= args['user'];
+    feedPhotos ??= args['feedPhotoList'];
+
+
     return Scaffold(
       appBar: AppBar(
         title: Image.asset(
@@ -55,6 +67,48 @@ class _AddState extends State<AddScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
+              Center(
+                  child: Text(
+                'Post your Item!',
+                style: TextStyle(fontSize: 36, color: Colors.brown[300]),
+              )),
+              SizedBox(height: 20),
+              TextFormField(
+                decoration: InputDecoration(
+                  hintText: 'Enter Your Email',
+                  fillColor: Colors.brown[100],
+                  filled: true,
+                  focusColor: Colors.brown[100],
+                ),
+                autocorrect: true,
+                validator: con.validatorUser,
+                onSaved: con.onSavedUser,
+                controller: emailEditingController,
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  hintText: 'Price',
+                  fillColor: Colors.brown[100],
+                  filled: true,
+                  focusColor: Colors.brown[100],
+                ),
+                autocorrect: true,
+                validator: con.validatorPrice,
+                onSaved: con.onSavedPrice,
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  hintText: 'Caption',
+                  fillColor: Colors.brown[100],
+                  filled: true,
+                  focusColor: Colors.brown[100],
+                ),
+                autocorrect: true,
+                keyboardType: TextInputType.multiline,
+                maxLines: 3,
+                validator: con.validatorCaption,
+                onSaved: con.onSavedCaption,
+              ),
               Stack(
                 children: <Widget>[
                   Container(
@@ -100,32 +154,6 @@ class _AddState extends State<AddScreen> {
                   ),
                 ],
               ),
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'Caption',
-                ),
-                autocorrect: true,
-                keyboardType: TextInputType.multiline,
-                maxLines: 3,
-                validator: con.validatorCaption,
-                onSaved: con.onSavedCaption,
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'Price',
-                ),
-                autocorrect: true,
-                validator: con.validatorPrice,
-                onSaved: con.onSavedPrice,
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'Enter username',
-                ),
-                autocorrect: true,
-                validator: con.validatorUser,
-                onSaved: con.onSavedUser,
-              ),
             ],
           ),
         ),
@@ -139,8 +167,34 @@ class _Controller {
   _Controller(this._state);
   String caption;
   String price;
+  String email;
 
-  void save() async {}
+  void save() async {
+    if (!_state.formkey.currentState.validate()) {
+      return;
+    }
+    _state.formkey.currentState.save();
+    Map<String, String> photoInfo = await DataController.uploadStorage(
+      image: _state.image,
+      uid: 'abcds',
+    );
+
+    var p = FeedPhotos(
+        caption: caption,
+        price: price,
+        photoPath: photoInfo['path'],
+        photoURL: photoInfo['url'],
+        createdBy: _state.emailEditingController.text,
+        updatedAt: DateTime.now(),
+      );
+
+      p.docId = await DataController.addPhotoMemo(p);
+      _state.feedPhotos.insert(0, p); // adds to first position
+      Navigator.pop(_state.context);
+
+    // print('==========: ${photoInfo["path"]}');
+    // print('==========: ${photoInfo["url"]}');
+  }
 
   void getPicture(String src) async {
     try {
@@ -169,8 +223,8 @@ class _Controller {
   }
 
   String validatorPrice(String value) {
-    if (value == null || value.trim().length < 3) {
-      return 'min 3 chars';
+    if (value == null || value.trim().length < 1) {
+      return 'min 1 number';
     } else {
       return null;
     }

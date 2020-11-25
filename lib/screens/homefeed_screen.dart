@@ -112,7 +112,7 @@ class _HomeState extends State<HomeFeedScreen> {
           ),
       body: //Center(child: Text("Welcome!! Number of docs ${feedPhotos.length}",style: TextStyle(fontSize: 40),),),
           feedPhotos.length == 0
-              ? Text('No Photos', style: TextStyle(fontSize: 30.0))
+              ? Center(child: Text('No Posts', style: TextStyle(fontSize: 30.0)))
               : ListView.builder(
                   itemCount: feedPhotos.length,
                   itemBuilder: (BuildContext context, int index) => Container(
@@ -187,8 +187,11 @@ class _HomeState extends State<HomeFeedScreen> {
                         ),
                       ),
                     ),
+                    
                   ),
+                
                 ),
+                
     );
   }
 }
@@ -200,7 +203,7 @@ class _Controller {
 
   void addButton () async{
   await Navigator.pushNamed(_state.context, AddScreen.routeName,
-        arguments: {'user': _state.user1, 'feedPhotoList': _state.feedPhotos});
+        arguments: {'user': _state.user, 'feedPhotoList': _state.feedPhotos});
 
     _state.render(() {}); // redraw the screen  
   }

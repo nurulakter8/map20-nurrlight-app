@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nurrlight/controller/authmethods_controller.dart';
 import 'package:nurrlight/controller/data_controller.dart';
-import 'package:nurrlight/controller/widget_controller.dart';
 import 'package:nurrlight/model/feedphotos.dart';
 import 'package:nurrlight/model/user.dart';
 import 'package:nurrlight/screens/forgotpassword_screen.dart';
@@ -146,7 +145,7 @@ class _Controller {
       if (_state.formKey.currentState.validate()) {
         _state.isLoading = true;
 
-        _state.user1 = await AuthMethodsController.signInWithEmailAndPassword(
+        user = await AuthMethodsController.signInWithEmailAndPassword(
                 _state.emailEditingController.text,
                 _state.passwordEditingController.text)
             .then((result) async {
