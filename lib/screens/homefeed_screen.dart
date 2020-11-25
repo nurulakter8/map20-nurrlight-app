@@ -1,10 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nurrlight/controller/authmethods_controller.dart';
 import 'package:nurrlight/model/feedphotos.dart';
 import 'package:nurrlight/model/user.dart';
+import 'package:nurrlight/screens/add_screen.dart';
 import 'package:nurrlight/screens/search_screen.dart';
 import 'package:nurrlight/screens/signin_screen.dart';
-import 'package:nurrlight/screens/views/imageframe_view.dart';
 
 class HomeFeedScreen extends StatefulWidget {
   static const routeName = '/signInScreen/homeScreen';
@@ -18,7 +19,8 @@ class HomeFeedScreen extends StatefulWidget {
 class _HomeState extends State<HomeFeedScreen> {
   _Controller con;
   AuthMethodsController authMethodsController = new AuthMethodsController();
-  User user = new User();
+  User user1 = new User();
+  FirebaseUser user;
   List<FeedPhotos> feedPhotos;
 
   @override
@@ -26,10 +28,13 @@ class _HomeState extends State<HomeFeedScreen> {
     super.initState();
     con = _Controller(this);
   }
+    void render(fn) => setState(fn);
+
 
   @override
   Widget build(BuildContext context) {
     Map arg = ModalRoute.of(context).settings.arguments;
+     user1 ??= arg['user'];
     feedPhotos ??= arg['feedPhotoList'];
 
     return Scaffold(
@@ -63,7 +68,7 @@ class _HomeState extends State<HomeFeedScreen> {
                 child: DrawerHeader(
                     child: Center(
                         child: Text(
-                  'User Id: ${user.UserID}',
+                  'User Id: ${user1.UserID}',
                   textAlign: TextAlign.center,
                 ))),
                 color: Colors.grey[400],
@@ -101,6 +106,10 @@ class _HomeState extends State<HomeFeedScreen> {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+            onPressed: con.addButton,
+            child: Icon(Icons.add),
+          ),
       body: //Center(child: Text("Welcome!! Number of docs ${feedPhotos.length}",style: TextStyle(fontSize: 40),),),
           feedPhotos.length == 0
               ? Text('No Photos', style: TextStyle(fontSize: 30.0))
@@ -131,39 +140,51 @@ class _HomeState extends State<HomeFeedScreen> {
                     //   onTap: (){} ,// on tap funtion, part of listtile. goes to detailed page
                     // onLongPress: () {} // on long press we will permently delete the index
                     // ),
-                    child: Card(
-                      margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
-                      color: Colors.white,
-                      elevation: 10.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      child: Column(
-                        
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
+                    child: GestureDetector(
+                      onTap: () => SearchScreen.routeName,
+                      child: Card(
+                        margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+                        color: Colors.white,
+                        elevation: 10.0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: InkWell(
+                          onTap: () => Navigator.pushNamed(context, SearchScreen.routeName),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Image.network(feedPhotos[index].photoURL,
-                                  width: 300.0),
-                              SizedBox(
-                                width: 15.0,
+                              Row(
+                                children: <Widget>[
+                                  Image.network(feedPhotos[index].photoURL,
+                                      width: 300.0),
+                                  SizedBox(
+                                    width: 15.0,
+                                  ),
+                                ],
+                                mainAxisAlignment: MainAxisAlignment.center,
+                              ),
+                              Center(
+                                child: Text('Caption: ${feedPhotos[index].caption}',
+                                    style: TextStyle(
+                                      fontSize: 25.0,
+                                    )),
+                              ),
+                              Center(
+                                child: Text('Author: ${feedPhotos[index].createdBy}',
+                                    style: TextStyle(
+                                      fontSize: 25.0,
+                                    )),
+                              ),
+                              Center(
+                                child: Text('Price: ${feedPhotos[index].price}',
+                                    style: TextStyle(
+                                      fontSize: 25.0,
+                                    )),
                               ),
                             ],
                           ),
-                          Text('Caption: ${feedPhotos[index].caption}',
-                              style: TextStyle(
-                                fontSize: 25.0,
-                              )),
-                          Text('Author: ${feedPhotos[index].createdBy}',
-                              style: TextStyle(
-                                fontSize: 25.0,
-                              )),
-                          Text('Price: ${feedPhotos[index].price}',
-                              style: TextStyle(
-                                fontSize: 25.0,
-                              )),
-                        ],
+                        ),
                       ),
                     ),
                   ),
@@ -176,4 +197,11 @@ class _Controller {
   _HomeState _state;
   _Controller(this._state);
   int delIndex;
+
+  void addButton () async{
+  await Navigator.pushNamed(_state.context, AddScreen.routeName,
+        arguments: {'user': _state.user1, 'feedPhotoList': _state.feedPhotos});
+
+    _state.render(() {}); // redraw the screen  
+  }
 }

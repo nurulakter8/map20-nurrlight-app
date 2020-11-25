@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nurrlight/controller/authmethods_controller.dart';
 import 'package:nurrlight/model/user.dart';
-import 'package:nurrlight/screens/homefeed_screen.dart';
 import 'package:nurrlight/screens/signin_screen.dart';
 import 'package:nurrlight/screens/usersearch_screen.dart';
 

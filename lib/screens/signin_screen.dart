@@ -4,6 +4,7 @@ import 'package:nurrlight/controller/authmethods_controller.dart';
 import 'package:nurrlight/controller/data_controller.dart';
 import 'package:nurrlight/controller/widget_controller.dart';
 import 'package:nurrlight/model/feedphotos.dart';
+import 'package:nurrlight/model/user.dart';
 import 'package:nurrlight/screens/forgotpassword_screen.dart';
 import 'package:nurrlight/screens/signup_screen.dart';
 import 'package:nurrlight/screens/views/messagebox.dart';
@@ -25,6 +26,7 @@ class _SignInState extends State<SignInScreen> {
   bool isLoading = false;
   TextEditingController emailEditingController = new TextEditingController();
   TextEditingController passwordEditingController = new TextEditingController();
+  User user1 = new User();
 
   @override
   void initState() {
@@ -133,6 +135,7 @@ class _Controller {
   _Controller(this._state);
   String email; // valided ones will be there
   String password;
+  FirebaseUser user;
 
   void signUp() {
     Navigator.pushNamed(_state.context, SignUpScreen.routeName);
@@ -143,7 +146,7 @@ class _Controller {
       if (_state.formKey.currentState.validate()) {
         _state.isLoading = true;
 
-        await AuthMethodsController.signInWithEmailAndPassword(
+        _state.user1 = await AuthMethodsController.signInWithEmailAndPassword(
                 _state.emailEditingController.text,
                 _state.passwordEditingController.text)
             .then((result) async {
@@ -157,7 +160,7 @@ class _Controller {
               // go to home feed page
               Navigator.pushReplacementNamed(
                   _state.context, HomeFeedScreen.routeName,
-                  arguments: {'feedPhotoList': feedPhotos});
+                  arguments: {'user': _state.user1, 'feedPhotoList': feedPhotos});
             } catch (e) {
               MessageBox.info(
                 context: _state.context,
@@ -171,6 +174,7 @@ class _Controller {
               title: 'Sign in error',
             );
           }
+          return;
         });
       }
     } catch (e) {
