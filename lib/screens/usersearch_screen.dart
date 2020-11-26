@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:nurrlight/controller/authmethods_controller.dart';
+import 'package:nurrlight/controller/constants.dart';
 import 'package:nurrlight/controller/data_controller.dart';
 import 'package:nurrlight/model/user.dart';
 import 'package:nurrlight/screens/signin_screen.dart';
@@ -25,6 +26,67 @@ class _UserSearchState extends State<UserSearchScreen> {
 
   TextEditingController searchEditingController = new TextEditingController();
 
+  // chatroom to send user
+  createChatRoomToStartConvo({ String userName,  }) {
+    if (userName != Constants.myName){
+      String chatRoomId = getChatRoomId(userName, Constants.myName);
+
+    List<String> users = [userName, Constants.myName];
+    Map<String, dynamic> chatroomMap = {
+      "users": users,
+      "chatroomId": chatRoomId,
+    };
+    DataController().createChatRoom(chatRoomId, chatroomMap);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ChatroomScreen(),
+        ));
+    }else{
+      print("Cant send message to same user");
+    }
+  }
+
+  Widget SearchTile({String userName,
+   String userEmail}){
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+      child: Row(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                userName,
+                style: TextStyle(fontSize: 20, color: Colors.brown[300]),
+              ),
+              Text(
+                userEmail,
+                style: TextStyle(fontSize: 20, color: Colors.brown[300]),
+              ),
+            ],
+          ),
+          Spacer(),
+          GestureDetector(
+            onTap: () {
+              createChatRoomToStartConvo( userName: userName);
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.brown[300],
+                borderRadius: BorderRadius.circular(25),
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 35, vertical: 14),
+              child: Text(
+                "Chat",
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
   @override
   void initState() {
     super.initState();
@@ -77,53 +139,6 @@ class _UserSearchState extends State<UserSearchScreen> {
           ),
         ],
       ),
-      drawer: Drawer(
-        child: Container(
-          color: Colors.brown[300],
-          child: ListView(
-            children: <Widget>[
-              Container(
-                child: DrawerHeader(
-                    child: Center(
-                        child: Text(
-                  'User: ${user.UserID.toString()}',
-                  textAlign: TextAlign.center,
-                ))),
-                color: Colors.grey[400],
-              ),
-              // ListTile(
-              //   leading: Icon(
-              //     Icons.pages,
-              //     color: Colors.white,
-              //   ),
-              //   title: Text('Feed'),
-              //   onTap: () {
-              //     Navigator.pushNamed(context, HomeFeedScreen.routeName);
-              //   },
-              // ),
-              ListTile(
-                leading: Icon(
-                  Icons.info,
-                  color: Colors.white,
-                ),
-                title: Text('About'),
-                onTap: () {}, // sprint 2
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.exit_to_app,
-                  color: Colors.white,
-                ),
-                title: Text('Sign out'),
-                onTap: () {
-                  Navigator.pushReplacementNamed(
-                      context, SignInScreen.routeName);
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
       body: Container(
         child: Column(
           children: [
@@ -169,48 +184,11 @@ class _UserSearchState extends State<UserSearchScreen> {
   }
 }
 
-class SearchTile extends StatelessWidget {
-  final String userName;
-  final String userEmail;
-  SearchTile({this.userName, this.userEmail});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-      child: Row(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                userName,
-                style: TextStyle(fontSize: 20, color: Colors.brown[300]),
-              ),
-              Text(
-                userEmail,
-                style: TextStyle(fontSize: 20, color: Colors.brown[300]),
-              ),
-            ],
-          ),
-          Spacer(),
-          GestureDetector(
-            onTap: () => Navigator.pushNamed(context, ChatroomScreen.routeName),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.brown[300],
-                borderRadius: BorderRadius.circular(25),
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 35, vertical: 14),
-              child: Text(
-                "Chat",
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+getChatRoomId(String a, String b) {
+  if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
+    return "$b\_$a";
+  } else {
+    return "$a\_$b";
   }
 }
 

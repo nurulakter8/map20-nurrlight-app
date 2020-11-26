@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nurrlight/controller/authmethods_controller.dart';
+import 'package:nurrlight/controller/constants.dart';
+import 'package:nurrlight/controller/helper_controller.dart';
 import 'package:nurrlight/model/user.dart';
 import 'package:nurrlight/screens/signin_screen.dart';
 import 'package:nurrlight/screens/usersearch_screen.dart';
@@ -20,8 +22,13 @@ class _SearchState extends State<SearchScreen> {
 
   @override
   void initState() {
+    getUserInfo();
     super.initState();
     con = _Controller(this);
+  }
+
+  getUserInfo() async{
+    Constants.myName = await HelperFunctions.getUserNameSharedPreference();
   }
 
   @override
@@ -47,53 +54,6 @@ class _SearchState extends State<SearchScreen> {
             ),
           ),
         ],
-      ),
-      drawer: Drawer(
-        child: Container(
-          color: Colors.brown[300],
-          child: ListView(
-            children: <Widget>[
-              Container(
-                child: DrawerHeader(
-                    child: Center(
-                        child: Text(
-                  'User Id: ${user.UserID}',
-                  textAlign: TextAlign.center,
-                ))),
-                color: Colors.grey[400],
-              ),
-              // ListTile(
-              //   leading: Icon(
-              //     Icons.pages,
-              //     color: Colors.white,
-              //   ),
-              //   title: Text('Feed'),
-              //   onTap: () {
-              //     Navigator.pushNamed(context, HomeFeedScreen.routeName);
-              //   },
-              // ),
-              ListTile(
-                leading: Icon(
-                  Icons.info,
-                  color: Colors.white,
-                ),
-                title: Text('About'),
-                onTap: () {}, // sprint 2
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.exit_to_app,
-                  color: Colors.white,
-                ),
-                title: Text('Sign out'),
-                onTap: () {
-                  Navigator.pushReplacementNamed(
-                      context, SignInScreen.routeName);
-                },
-              ),
-            ],
-          ),
-        ),
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(320, 490, 10, 10),

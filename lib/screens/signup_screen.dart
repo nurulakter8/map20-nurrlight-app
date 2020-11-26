@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nurrlight/controller/authmethods_controller.dart';
 import 'package:nurrlight/controller/data_controller.dart';
+import 'package:nurrlight/controller/helper_controller.dart';
 import 'package:nurrlight/screens/signin_screen.dart';
 
 
@@ -18,6 +19,7 @@ class _SignUpState extends State<SignUpScreen> {
   bool isLoading = false;
   AuthMethodsController authMethodsController = new AuthMethodsController();
   DataController dataController = new DataController();
+  HelperFunctions helperFunctions = new HelperFunctions();
 
   TextEditingController userNameTextEditingController =
       new TextEditingController();
@@ -147,8 +149,14 @@ class _Controller {
               "name" : _state.userNameTextEditingController.text,
               "email": _state.emailTextEditingController.text,
             };
+            // saving values
+          HelperFunctions.saveUserEmailSharedPreference(_state.emailTextEditingController.text);
+          HelperFunctions.saveUserEmailSharedPreference(_state.userNameTextEditingController.text);
+
 
             _state.dataController.uploadUserInfo(userInfoMap);
+            HelperFunctions.saveUserLoggedInSharedPreference(true);
+
             Navigator.pushNamed(_state.context, SignInScreen.routeName);
 
           } //print('${value.uId}'));

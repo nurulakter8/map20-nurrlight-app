@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nurrlight/controller/authmethods_controller.dart';
 import 'package:nurrlight/controller/data_controller.dart';
+import 'package:nurrlight/controller/helper_controller.dart';
 import 'package:nurrlight/model/feedphotos.dart';
 import 'package:nurrlight/model/user.dart';
 import 'package:nurrlight/screens/forgotpassword_screen.dart';
@@ -22,9 +24,11 @@ class _SignInState extends State<SignInScreen> {
   _Controller con;
   var formKey = GlobalKey<FormState>(); // form key
   AuthMethodsController authMethodsController = new AuthMethodsController();
+  DataController dataController = new DataController();
   bool isLoading = false;
   TextEditingController emailEditingController = new TextEditingController();
   TextEditingController passwordEditingController = new TextEditingController();
+  QuerySnapshot snapshotUserInfo;
   User user1 = new User();
 
   @override
@@ -144,6 +148,18 @@ class _Controller {
     try {
       if (_state.formKey.currentState.validate()) {
         _state.isLoading = true;
+        // saving values
+        HelperFunctions.saveUserEmailSharedPreference(
+            _state.emailEditingController.text);
+        // HelperFunctions.saveUserEmailSharedPreference(_state.userNameTextEditingController.text);
+
+        _state.dataController
+            .getUserByUserEmail(_state.emailEditingController.text)
+            .then((val) {
+          _state.snapshotUserInfo = val;
+          HelperFunctions.saveUserEmailSharedPreference(
+              _state.snapshotUserInfo.documents[0].data["name"]);
+        });
 
         user = await AuthMethodsController.signInWithEmailAndPassword(
                 _state.emailEditingController.text,
@@ -156,10 +172,14 @@ class _Controller {
                   _state.emailEditingController.text);
               print("+++++++++++++++++");
               print(feedPhotos.toString());
+              HelperFunctions.saveUserLoggedInSharedPreference(true);
+
               // go to home feed page
               Navigator.pushReplacementNamed(
-                  _state.context, HomeFeedScreen.routeName,
-                  arguments: {'user': _state.user1, 'feedPhotoList': feedPhotos});
+                  _state.context, HomeFeedScreen.routeName, arguments: {
+                'user': _state.user1,
+                'feedPhotoList': feedPhotos
+              });
             } catch (e) {
               MessageBox.info(
                 context: _state.context,

@@ -49,53 +49,6 @@ class _ChatState extends State<ChatroomScreen> {
           ),
         ],
       ),
-      drawer: Drawer(
-        child: Container(
-          color: Colors.brown[300],
-          child: ListView(
-            children: <Widget>[
-              Container(
-                child: DrawerHeader(
-                    child: Center(
-                        child: Text(
-                  'User Id: ${user.UserID}',
-                  textAlign: TextAlign.center,
-                ))),
-                color: Colors.grey[400],
-              ),
-              // ListTile(
-              //   leading: Icon(
-              //     Icons.pages,
-              //     color: Colors.white,
-              //   ),
-              //   title: Text('Feed'),
-              //   onTap: () {
-              //     Navigator.pushNamed(context, HomeFeedScreen.routeName);
-              //   },
-              // ),
-              ListTile(
-                leading: Icon(
-                  Icons.info,
-                  color: Colors.white,
-                ),
-                title: Text('About'),
-                onTap: () {}, // sprint 2
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.exit_to_app,
-                  color: Colors.white,
-                ),
-                title: Text('Sign out'),
-                onTap: () {
-                  Navigator.pushReplacementNamed(
-                      context, SignInScreen.routeName);
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
       body: Container(
         alignment: Alignment.center,
         child: Text("Let's Chat!! ", style: TextStyle(color: Colors.brown[300], fontSize: 70),),

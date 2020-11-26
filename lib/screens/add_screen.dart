@@ -75,7 +75,7 @@ class _AddState extends State<AddScreen> {
               SizedBox(height: 20),
               TextFormField(
                 decoration: InputDecoration(
-                  hintText: 'Enter Your Email',
+                  hintText: 'Enter Your Username',
                   fillColor: Colors.brown[100],
                   filled: true,
                   focusColor: Colors.brown[100],

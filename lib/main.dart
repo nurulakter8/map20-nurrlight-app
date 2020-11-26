@@ -3,6 +3,7 @@ import 'package:nurrlight/screens/add_screen.dart';
 import 'package:nurrlight/screens/chatroom_screen.dart';
 import 'package:nurrlight/screens/forgotpassword_screen.dart';
 import 'package:nurrlight/screens/homefeed_screen.dart';
+import 'package:nurrlight/screens/moreinfo_screen.dart';
 import 'package:nurrlight/screens/search_screen.dart';
 import 'package:nurrlight/screens/signin_screen.dart';
 import 'package:nurrlight/screens/signup_screen.dart';
@@ -32,7 +33,7 @@ class NurrLightApp extends StatelessWidget {
           UserSearchScreen.routeName: (context) => UserSearchScreen(),
           ChatroomScreen.routeName: (context) => ChatroomScreen(),
           AddScreen.routeName: (context) => AddScreen(),
-
+          MoreInfoScreen.routeName: (context) => MoreInfoScreen(),
         });
   }
 }

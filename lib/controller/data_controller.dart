@@ -13,6 +13,13 @@ class DataController {
         .getDocuments();
   }
 
+    getUserByUserEmail(String userEmail) async{
+   return await Firestore.instance
+        .collection("users")
+        .where("email", isEqualTo: userEmail)
+        .getDocuments();
+  }
+
   uploadUserInfo(userMap) {
     // collection of map
     Firestore.instance.collection("users").add(userMap);
@@ -46,12 +53,6 @@ class DataController {
     StorageUploadTask task =
         FirebaseStorage.instance.ref().child(filePath).putFile(image);
 
-    // task.events.listen((event) {
-    //   double percentage = (event.snapshot.bytesTransferred.toDouble() /
-    //           event.snapshot.totalByteCount.toDouble()) *
-    //       100;
-    //   listner(percentage);
-    // });
     var download = await task.onComplete;
     String url = await download.ref.getDownloadURL();
     print('+++++++++ URL: $url');
@@ -65,5 +66,14 @@ class DataController {
         .add(feedPhotos.serialized());
     return ref.documentID;
   }
+
+  createChatRoom(String chatroomId, chatRoomMap){
+    Firestore.instance.collection("ChatRoom").document(chatroomId).setData(chatRoomMap).catchError((e){
+      print(e.toString());
+    });
+
+  }
+
+
 
 }
