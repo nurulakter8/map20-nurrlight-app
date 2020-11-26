@@ -192,8 +192,8 @@ class _Controller {
   }
 
   String validatorUsername(String value) {
-    if (value.length < 6)
-      return 'min 6 chars';
+    if (value.length < 4)
+      return 'min  chars';
     else
       return null;
   }
