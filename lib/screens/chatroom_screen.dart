@@ -23,25 +23,28 @@ class _ChatState extends State<ChatroomScreen> {
   DataController dataController = new DataController();
   Stream chatmessageStream;
 
-
   User user = new User();
 
   Widget ChatMessageList() {
     return StreamBuilder(
       stream: chatmessageStream,
-      builder: (context, snapshot){
-        return snapshot.hasData ? ListView.builder(
-          itemCount: snapshot.data.documents.length,
-          itemBuilder: (context, index){
-          return MessageTile(snapshot.data.documents[index].data["message"]);
-        }) : Container();
+      builder: (context, snapshot) {
+        return snapshot.hasData
+            ? ListView.builder(
+                itemCount: snapshot.data.documents.length,
+                itemBuilder: (context, index) {
+                  return MessageTile(
+                      snapshot.data.documents[index].data["message"],
+                      snapshot.data.documents[index].data["sendBy"] == Constants.myName);
+                })
+            : Container();
       },
     );
   }
 
   @override
   void initState() {
-    dataController.getConversationMessages(widget.chatRoomId).then((value){
+    dataController.getConversationMessages(widget.chatRoomId).then((value) {
       setState(() {
         chatmessageStream = value;
       });
@@ -135,18 +138,58 @@ class _ChatState extends State<ChatroomScreen> {
   }
 }
 
-class MessageTile extends StatelessWidget{
-final String message;
-MessageTile(this.message);
+class MessageTile extends StatelessWidget {
+  final String message;
+  final bool isSendByMe;
+
+  MessageTile(this.message, this.isSendByMe);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text(message, style: TextStyle(color: Colors.black),),
+      padding: EdgeInsets.only(
+          top: 8,
+          bottom: 8,
+          left: isSendByMe ? 0 : 24,
+          right: isSendByMe ? 24 : 0),
+      alignment: isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        margin: isSendByMe
+            ? EdgeInsets.only(left: 30)
+            : EdgeInsets.only(right: 30),
+        padding: EdgeInsets.only(
+            top: 17, bottom: 17, left: 20, right: 20),
+        decoration: BoxDecoration(
+            borderRadius: isSendByMe ? BorderRadius.only(
+                topLeft: Radius.circular(23),
+                topRight: Radius.circular(23),
+                bottomLeft: Radius.circular(23)
+            ) :
+            BorderRadius.only(
+        topLeft: Radius.circular(23),
+          topRight: Radius.circular(23),
+          bottomRight: Radius.circular(23)),
+            gradient: LinearGradient(
+              colors: isSendByMe ? [
+                Colors.brown[300],
+                Colors.brown[300]
+              ]
+                  : [
+                const Color(0x1AFFFFFF),
+                const Color(0x1AFFFFFF)
+              ],
+            )
+        ),
+        child: Text(message,
+            textAlign: TextAlign.start,
+            style: TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontFamily: 'OverpassRegular',
+            fontWeight: FontWeight.w300)),
+      ),
     );
   }
-
-  
 }
 
 class _Controller {
@@ -156,13 +199,13 @@ class _Controller {
   void sendMessage() {
     if (_state.messageController.text.isNotEmpty) {
       Map<String, dynamic> messageMap = {
-        "message" : _state.messageController.text,
-        "sendBy" : Constants.myName,
-        "time" : DateTime.now().millisecondsSinceEpoch,
+        "message": _state.messageController.text,
+        "sendBy": Constants.myName,
+        "time": DateTime.now().millisecondsSinceEpoch,
       };
       _state.dataController
           .addConversationMessages(_state.widget.chatRoomId, messageMap);
-          _state.messageController.text = "";
+      _state.messageController.text = "";
     }
   }
 }
