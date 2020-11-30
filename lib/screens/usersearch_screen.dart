@@ -5,7 +5,6 @@ import 'package:nurrlight/controller/constants.dart';
 import 'package:nurrlight/controller/data_controller.dart';
 import 'package:nurrlight/model/user.dart';
 import 'package:nurrlight/screens/signin_screen.dart';
-import 'package:nurrlight/screens/views/messagebox.dart';
 
 import 'chatroom_screen.dart';
 
