@@ -157,7 +157,7 @@ class _Controller {
             .getUserByUserEmail(_state.emailEditingController.text)
             .then((val) {
           _state.snapshotUserInfo = val;
-          HelperFunctions.saveUserEmailSharedPreference(
+          HelperFunctions.saveUserNameSharedPreference(
               _state.snapshotUserInfo.documents[0].data["name"]);
         });
 

@@ -19,6 +19,10 @@ class _ChatState extends State<ChatroomScreen> {
   AuthMethodsController authMethodsController = new AuthMethodsController();
   User user = new User();
 
+  Widget ChatMessageList(){
+    
+  }
+
   @override
   void initState() {
     super.initState();
@@ -50,10 +54,61 @@ class _ChatState extends State<ChatroomScreen> {
         ],
       ),
       body: Container(
-        alignment: Alignment.center,
-        child: Text("Let's Chat!! ", style: TextStyle(color: Colors.brown[300], fontSize: 70),),
-      )
-
+        child: Stack(
+          children: [
+            Container(alignment: Alignment.bottomCenter,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+                color: Colors.brown[200],
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: TextField(
+                          //controller: messageEditingController,
+                          //style: simpleTextStyle(),
+                          decoration: InputDecoration(
+                              hintText: "Message ...",
+                              hintStyle: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                              border: InputBorder.none
+                          ),
+                        )),
+                    SizedBox(width: 16,),
+                    GestureDetector(
+                      onTap: () {
+                        //addMessage();
+                      },
+                      child: Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  colors: [
+                                    const Color(0x36FFFFFF),
+                                    const Color(0x0FFFFFFF)
+                                  ],
+                                  begin: FractionalOffset.topLeft,
+                                  end: FractionalOffset.bottomRight
+                              ),
+                              borderRadius: BorderRadius.circular(40)
+                          ),
+                          padding: EdgeInsets.all(12),
+                          child: Image.asset("assets/images/send.png",
+                            height: 25, width: 25,)),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

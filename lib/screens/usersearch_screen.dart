@@ -28,7 +28,7 @@ class _UserSearchState extends State<UserSearchScreen> {
 
   // chatroom to send user
   createChatRoomToStartConvo({ String userName,  }) {
-    if (userName != Constants.myName){
+    if (userName != Constants.myName){ // can't send message myself
       String chatRoomId = getChatRoomId(userName, Constants.myName);
 
     List<String> users = [userName, Constants.myName];
@@ -43,7 +43,7 @@ class _UserSearchState extends State<UserSearchScreen> {
           builder: (context) => ChatroomScreen(),
         ));
     }else{
-      print("Cant send message to same user");
+      print("Can't send message to same user");
     }
   }
 
