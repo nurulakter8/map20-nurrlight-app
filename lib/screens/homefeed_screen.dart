@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nurrlight/controller/authmethods_controller.dart';
+import 'package:nurrlight/controller/constants.dart';
 import 'package:nurrlight/model/feedphotos.dart';
 import 'package:nurrlight/model/user.dart';
 import 'package:nurrlight/screens/add_screen.dart';
@@ -71,10 +72,12 @@ class _HomeState extends State<HomeFeedScreen> {
                   child: DrawerHeader(
                       child: Center(
                           child: Text(
-                    'User Id: ${user1.UserID}',
-                    textAlign: TextAlign.center,
+                    " User: ${Constants.myName}", 
+                    textAlign: TextAlign.center, 
+                    style: TextStyle(fontSize: 25),
                   ))),
                   color: Colors.grey[400],
+                  
                 ),
                 ListTile(
                   leading: Icon(
