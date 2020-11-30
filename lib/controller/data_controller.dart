@@ -95,4 +95,8 @@ class DataController {
         .orderBy("time", descending: false)
         .snapshots();
   }
+
+  getChatRooms(String userName) async {
+    return await Firestore.instance.collection("ChatRoom").where("users", arrayContains: userName).snapshots();
+  }
 }

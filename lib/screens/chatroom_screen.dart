@@ -173,10 +173,9 @@ class MessageTile extends StatelessWidget {
               colors: isSendByMe ? [
                 Colors.brown[300],
                 Colors.brown[300]
-              ]
-                  : [
-                const Color(0x1AFFFFFF),
-                const Color(0x1AFFFFFF)
+              ]: [
+                Colors.grey,
+                Colors.grey
               ],
             )
         ),
