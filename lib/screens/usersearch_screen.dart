@@ -44,7 +44,7 @@ class _UserSearchState extends State<UserSearchScreen> {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ChatroomScreen(),
+            builder: (context) => ChatroomScreen(chatRoomId),
           ));
     } else {
       print("Error Same User");

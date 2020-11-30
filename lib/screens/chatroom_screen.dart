@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:nurrlight/controller/authmethods_controller.dart';
+import 'package:nurrlight/controller/constants.dart';
+import 'package:nurrlight/controller/data_controller.dart';
 import 'package:nurrlight/model/user.dart';
-import 'package:nurrlight/screens/homefeed_screen.dart';
 import 'package:nurrlight/screens/signin_screen.dart';
-import 'package:nurrlight/screens/usersearch_screen.dart';
 
 class ChatroomScreen extends StatefulWidget {
   static const routeName = '/userSearchScreen/chatroomScreen';
+  final String chatRoomId;
+  ChatroomScreen(this.chatRoomId);
 
   @override
   State<StatefulWidget> createState() {
@@ -17,9 +19,12 @@ class ChatroomScreen extends StatefulWidget {
 class _ChatState extends State<ChatroomScreen> {
   _Controller con;
   AuthMethodsController authMethodsController = new AuthMethodsController();
+  TextEditingController messageController = new TextEditingController();
+  DataController dataController = new DataController();
+
   User user = new User();
 
-  Widget ChatMessageList(){
+  Widget ChatMessageList() {
     
   }
 
@@ -56,11 +61,9 @@ class _ChatState extends State<ChatroomScreen> {
       body: Container(
         child: Stack(
           children: [
-            Container(alignment: Alignment.bottomCenter,
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
+            Container(
+              alignment: Alignment.bottomCenter,
+              width: MediaQuery.of(context).size.width,
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
                 color: Colors.brown[200],
@@ -68,22 +71,23 @@ class _ChatState extends State<ChatroomScreen> {
                   children: [
                     Expanded(
                         child: TextField(
-                          //controller: messageEditingController,
-                          //style: simpleTextStyle(),
-                          decoration: InputDecoration(
-                              hintText: "Message ...",
-                              hintStyle: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                              ),
-                              border: InputBorder.none
-                          ),
-                        )),
-                    SizedBox(width: 16,),
+                      //controller: messageEditingController,
+                      //style: simpleTextStyle(),
+                      decoration: InputDecoration(
+                        hintText: "Message ...",
+                        hintStyle: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                        border: InputBorder.none,
+                      ),
+                      controller: messageController,
+                    )),
+                    SizedBox(
+                      width: 16,
+                    ),
                     GestureDetector(
-                      onTap: () {
-                        //addMessage();
-                      },
+                      onTap: con.sendMessage,
                       child: Container(
                           height: 40,
                           width: 40,
@@ -94,13 +98,14 @@ class _ChatState extends State<ChatroomScreen> {
                                     const Color(0x0FFFFFFF)
                                   ],
                                   begin: FractionalOffset.topLeft,
-                                  end: FractionalOffset.bottomRight
-                              ),
-                              borderRadius: BorderRadius.circular(40)
-                          ),
+                                  end: FractionalOffset.bottomRight),
+                              borderRadius: BorderRadius.circular(40)),
                           padding: EdgeInsets.all(12),
-                          child: Image.asset("assets/images/send.png",
-                            height: 25, width: 25,)),
+                          child: Image.asset(
+                            "assets/images/send.png",
+                            height: 25,
+                            width: 25,
+                          )),
                     ),
                   ],
                 ),
@@ -116,4 +121,15 @@ class _ChatState extends State<ChatroomScreen> {
 class _Controller {
   _ChatState _state;
   _Controller(this._state);
+
+  void sendMessage() {
+    if (_state.messageController.text.isNotEmpty) {
+      Map<String, String> messageMap = {
+        "message" : _state.messageController.text,
+        "sendBy" : Constants.myName
+      };
+      _state.dataController
+          .getConversationMessages(_state.widget.chatRoomId, messageMap);
+    }
+  }
 }

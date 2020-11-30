@@ -151,7 +151,7 @@ class _Controller {
             };
             // saving values
           HelperFunctions.saveUserEmailSharedPreference(_state.emailTextEditingController.text);
-          HelperFunctions.saveUserEmailSharedPreference(_state.userNameTextEditingController.text);
+          HelperFunctions.saveUserNameSharedPreference(_state.userNameTextEditingController.text);
 
 
             _state.dataController.uploadUserInfo(userInfoMap);

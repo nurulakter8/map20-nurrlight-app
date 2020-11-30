@@ -31,7 +31,7 @@ class NurrLightApp extends StatelessWidget {
           HomeFeedScreen.routeName: (context) => HomeFeedScreen(),
           SearchScreen.routeName: (context) => SearchScreen(),
           UserSearchScreen.routeName: (context) => UserSearchScreen(),
-          ChatroomScreen.routeName: (context) => ChatroomScreen(),
+          //ChatroomScreen.routeName: (context) => ChatroomScreen(),
           AddScreen.routeName: (context) => AddScreen(),
           MoreInfoScreen.routeName: (context) => MoreInfoScreen(),
         });
