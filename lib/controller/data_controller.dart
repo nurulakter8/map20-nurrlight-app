@@ -6,15 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:nurrlight/model/feedphotos.dart';
 
 class DataController {
-  getUserByUsername(String username) async{
-   return await Firestore.instance
+  getUserByUsername(String username) async {
+    return await Firestore.instance
         .collection("users")
         .where("name", isEqualTo: username)
         .getDocuments();
   }
 
-    getUserByUserEmail(String userEmail) async{
-   return await Firestore.instance
+  getUserByUserEmail(String userEmail) async {
+    return await Firestore.instance
         .collection("users")
         .where("email", isEqualTo: userEmail)
         .getDocuments();
@@ -25,8 +25,7 @@ class DataController {
     Firestore.instance.collection("users").add(userMap);
   }
 
-
-    static Future<List<FeedPhotos>> getPhotoMemos(String email) async {
+  static Future<List<FeedPhotos>> getPhotoMemos(String email) async {
     QuerySnapshot querySnapshot = await Firestore.instance
         .collection(FeedPhotos.COLLECTION)
         .where(FeedPhotos.CREATED_BY)
@@ -59,7 +58,7 @@ class DataController {
     return {'url': url, 'path': filePath};
   }
 
-    static Future<String> addPhotoMemo(FeedPhotos feedPhotos) async {
+  static Future<String> addPhotoMemo(FeedPhotos feedPhotos) async {
     feedPhotos.updatedAt = DateTime.now();
     DocumentReference ref = await Firestore.instance
         .collection(FeedPhotos.COLLECTION)
@@ -67,20 +66,33 @@ class DataController {
     return ref.documentID;
   }
 
-  createChatRoom(String chatroomId, chatRoomMap){
-    Firestore.instance.collection("ChatRoom").document(chatroomId).setData(chatRoomMap).catchError((e){
+  createChatRoom(String chatroomId, chatRoomMap) {
+    Firestore.instance
+        .collection("ChatRoom")
+        .document(chatroomId)
+        .setData(chatRoomMap)
+        .catchError((e) {
       print(e.toString());
-    });
-
-  }
-
-  getConversationMessages(String chatRoomId, messageMap) {
-    Firestore.instance.collection("ChatRoom").document(chatRoomId).collection("chats").add(messageMap).catchError((e){
-      print(e.toString());
-
     });
   }
 
+  addConversationMessages(String chatRoomId, messageMap) {
+    Firestore.instance
+        .collection("ChatRoom")
+        .document(chatRoomId)
+        .collection("chats")
+        .add(messageMap)
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
 
-
+  getConversationMessages(String chatRoomId) async {
+    return await Firestore.instance
+        .collection("ChatRoom")
+        .document(chatRoomId)
+        .collection("chats")
+        .orderBy("time", descending: false)
+        .snapshots();
+  }
 }

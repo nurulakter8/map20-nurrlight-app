@@ -21,15 +21,31 @@ class _ChatState extends State<ChatroomScreen> {
   AuthMethodsController authMethodsController = new AuthMethodsController();
   TextEditingController messageController = new TextEditingController();
   DataController dataController = new DataController();
+  Stream chatmessageStream;
+
 
   User user = new User();
 
   Widget ChatMessageList() {
-    
+    return StreamBuilder(
+      stream: chatmessageStream,
+      builder: (context, snapshot){
+        return snapshot.hasData ? ListView.builder(
+          itemCount: snapshot.data.documents.length,
+          itemBuilder: (context, index){
+          return MessageTile(snapshot.data.documents[index].data["message"]);
+        }) : Container();
+      },
+    );
   }
 
   @override
   void initState() {
+    dataController.getConversationMessages(widget.chatRoomId).then((value){
+      setState(() {
+        chatmessageStream = value;
+      });
+    });
     super.initState();
     con = _Controller(this);
   }
@@ -61,6 +77,7 @@ class _ChatState extends State<ChatroomScreen> {
       body: Container(
         child: Stack(
           children: [
+            ChatMessageList(),
             Container(
               alignment: Alignment.bottomCenter,
               width: MediaQuery.of(context).size.width,
@@ -118,18 +135,34 @@ class _ChatState extends State<ChatroomScreen> {
   }
 }
 
+class MessageTile extends StatelessWidget{
+final String message;
+MessageTile(this.message);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Text(message, style: TextStyle(color: Colors.black),),
+    );
+  }
+
+  
+}
+
 class _Controller {
   _ChatState _state;
   _Controller(this._state);
 
   void sendMessage() {
     if (_state.messageController.text.isNotEmpty) {
-      Map<String, String> messageMap = {
+      Map<String, dynamic> messageMap = {
         "message" : _state.messageController.text,
-        "sendBy" : Constants.myName
+        "sendBy" : Constants.myName,
+        "time" : DateTime.now().millisecondsSinceEpoch,
       };
       _state.dataController
-          .getConversationMessages(_state.widget.chatRoomId, messageMap);
+          .addConversationMessages(_state.widget.chatRoomId, messageMap);
+          _state.messageController.text = "";
     }
   }
 }
