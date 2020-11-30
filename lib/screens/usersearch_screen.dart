@@ -5,6 +5,7 @@ import 'package:nurrlight/controller/constants.dart';
 import 'package:nurrlight/controller/data_controller.dart';
 import 'package:nurrlight/model/user.dart';
 import 'package:nurrlight/screens/signin_screen.dart';
+import 'package:nurrlight/screens/views/messagebox.dart';
 
 import 'chatroom_screen.dart';
 
@@ -27,28 +28,31 @@ class _UserSearchState extends State<UserSearchScreen> {
   TextEditingController searchEditingController = new TextEditingController();
 
   // chatroom to send user
-  createChatRoomToStartConvo({ String userName,  }) {
-    if (userName != Constants.myName){ // can't send message myself
+  createChatRoomToStartConvo({
+    String userName,
+  }) {
+    if (userName != Constants.myName) {
+      // can't send message myself
       String chatRoomId = getChatRoomId(userName, Constants.myName);
 
-    List<String> users = [userName, Constants.myName];
-    Map<String, dynamic> chatroomMap = {
-      "users": users,
-      "chatroomId": chatRoomId,
-    };
-    DataController().createChatRoom(chatRoomId, chatroomMap);
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ChatroomScreen(),
-        ));
-    }else{
-      print("Can't send message to same user");
+      List<String> users = [userName, Constants.myName];
+      Map<String, dynamic> chatroomMap = {
+        "users": users,
+        "chatroomId": chatRoomId,
+      };
+      DataController().createChatRoom(chatRoomId, chatroomMap);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ChatroomScreen(),
+          ));
+    } else {
+      print("Error Same User");
+
     }
   }
 
-  Widget SearchTile({String userName,
-   String userEmail}){
+  Widget SearchTile({String userName, String userEmail}) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
       child: Row(
@@ -69,7 +73,7 @@ class _UserSearchState extends State<UserSearchScreen> {
           Spacer(),
           GestureDetector(
             onTap: () {
-              createChatRoomToStartConvo( userName: userName);
+              createChatRoomToStartConvo(userName: userName);
             },
             child: Container(
               decoration: BoxDecoration(
@@ -87,6 +91,7 @@ class _UserSearchState extends State<UserSearchScreen> {
       ),
     );
   }
+
   @override
   void initState() {
     super.initState();
