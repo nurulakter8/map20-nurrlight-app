@@ -25,6 +25,7 @@ class _HomeState extends State<HomeFeedScreen> {
   //User user1 = new User();
   FirebaseUser user;
   List<FeedPhotos> feedPhotos;
+  //var dollars = "$";
 
   @override
   void initState() {
@@ -73,12 +74,11 @@ class _HomeState extends State<HomeFeedScreen> {
                   child: DrawerHeader(
                       child: Center(
                           child: Text(
-                    " User: ${Constants.myName}", 
-                    textAlign: TextAlign.center, 
+                    " User: ${Constants.myName}",
+                    textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 25),
                   ))),
                   color: Colors.grey[400],
-                  
                 ),
                 ListTile(
                   leading: Icon(
@@ -131,53 +131,132 @@ class _HomeState extends State<HomeFeedScreen> {
                           ? Colors.red[200]
                           : Colors
                               .white, // on long press it will turn red to delete
-                      child: GestureDetector(
-                        onTap: () => SearchScreen.routeName,
-                        child: Card(
-                          margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
-                          color: Colors.white,
-                          elevation: 10.0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                          child: InkWell(
-                            onTap: con.moreInfo,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    Image.network(feedPhotos[index].photoURL,
-                                        width: 300.0),
-                                    SizedBox(
-                                      width: 15.0,
+                      child: Card(
+                        margin: EdgeInsets.all(20),
+                        color: Colors.white,
+                        elevation: 30.0,
+                        // shape: RoundedRectangleBorder(
+                        //   borderRadius: BorderRadius.all(10)),
+                        //),
+                        child: InkWell(
+                          onTap: () {
+                            // Navigator.pushNamed(
+                            //     context, MoreInfoScreen.routeName,
+                            //     arguments: {
+                            //       'users': user,
+                            //       'feedPhotoList': feedPhotos
+                            //     });
+                            con.moreInfo(index);
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Stack(
+                                children: <Widget>[
+                                  Center(
+                                    child: Container(
+                                      child: Image.network(
+                                        feedPhotos[index].photoURL,
+                                        width: 300.0,
+                                      ),
                                     ),
-                                  ],
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                ),
-                                Center(
-                                  child: Text(
-                                      'Caption: ${feedPhotos[index].caption}',
+                                  ),
+                                  Positioned(
+                                    left: 0,
+                                    top: 0,
+                                    child: Container(
+                                      height: 40,
+                                      width: 40,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                          color: Colors.brown[300],
+                                          borderRadius:
+                                              BorderRadius.circular(40)),
+                                      child: Text(
+                                        "${feedPhotos[index].createdBy.substring(0, 1).toUpperCase()}",
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 8,
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.fromLTRB(43, 8, 0, 0),
+                                    child: Text(
+                                      feedPhotos[index].createdBy,
                                       style: TextStyle(
-                                        fontSize: 25.0,
-                                      )),
-                                ),
-                                Center(
-                                  child: Text(
-                                      'Author: ${feedPhotos[index].createdBy}',
-                                      style: TextStyle(
-                                        fontSize: 25.0,
-                                      )),
-                                ),
-                                Center(
-                                  child:
-                                      Text('Price: ${feedPhotos[index].price}',
-                                          style: TextStyle(
-                                            fontSize: 25.0,
-                                          )),
-                                ),
-                              ],
-                            ),
+                                          color: Colors.black, fontSize: 20),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.fromLTRB(320, 8, 0, 0),
+                                    child: Text('\$ ${feedPhotos[index].price}',
+                                        style: TextStyle(
+                                          fontSize: 20.0,
+                                        )),
+                                  ),
+                                ],
+                              ),
+                              Stack(
+                                children: <Widget>[
+                                  Container(
+                                    child: Text(
+                                        ' ${feedPhotos[index].createdBy.toLowerCase()}',
+                                        style: TextStyle(
+                                          fontSize: 22.0,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.brown,
+                                        )),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.fromLTRB(60, 0, 0, 0),
+                                    child: Text('${feedPhotos[index].caption}',
+                                        style: TextStyle(
+                                          fontSize: 20.0,
+                                        )),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.fromLTRB(5, 23, 0, 0),
+                                    child: Text(
+                                      (() {
+                                        if ((DateTime.now()
+                                                .difference(
+                                                    feedPhotos[index].updatedAt)
+                                                .inDays) > 1
+                                            ) {
+                                          return '${(DateTime.now().difference(feedPhotos[index].updatedAt).inDays)} days ago';
+                                        }
+                                        if ((DateTime.now()
+                                                .difference(
+                                                    feedPhotos[index].updatedAt)
+                                                .inHours) > 
+                                            1) {
+                                          return '${(DateTime.now().difference(feedPhotos[index].updatedAt).inHours)} hours ago';
+                                        }
+                                        if ((DateTime.now()
+                                                .difference(
+                                                    feedPhotos[index].updatedAt)
+                                                .inMinutes) >
+                                            1) {
+                                          return '${(DateTime.now().difference(feedPhotos[index].updatedAt).inMinutes)} minutes ago';
+                                        }
+                                        if ((DateTime.now()
+                                                .difference(
+                                                    feedPhotos[index].updatedAt)
+                                                .inSeconds) >
+                                            1) {
+                                          return '${(DateTime.now().difference(feedPhotos[index].updatedAt).inSeconds)} seconds ago';
+                                        }
+                                      }()),
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 15)
+                            ],
                           ),
                         ),
                       ),
@@ -201,7 +280,7 @@ class _Controller {
     _state.render(() {}); // redraw the screen
   }
 
-  void moreInfo() async {
+  void moreInfo(int index) async {
     Navigator.pushNamed(_state.context, MoreInfoScreen.routeName,
         arguments: {'users': _state.user, 'feedPhotoList': _state.feedPhotos});
     _state.render(() {});

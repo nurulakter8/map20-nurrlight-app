@@ -25,6 +25,7 @@ class _MoreInfoState extends State<MoreInfoScreen> {
   var formkey = GlobalKey<FormState>();
   FirebaseUser user;
   List<FeedPhotos> feedPhotos;
+  //FeedPhotos feedPhotos;
 
   @override
   void initState() {
@@ -81,6 +82,30 @@ class _MoreInfoState extends State<MoreInfoScreen> {
         autoplay: false,
         //duration: 300,
       ),
+      // body: SingleChildScrollView(
+      //   child: Column(
+      //     crossAxisAlignment: CrossAxisAlignment.start,
+      //     children: <Widget>[
+      //       Stack( // using stack to have multiple container, one for the image and the other one for the button
+      //         children: <Widget>[
+      //           Container(
+      //             width: MediaQuery.of(context)
+      //                 .size
+      //                 .width, // uses full width image size
+      //             child:
+      //                // Image.network(photoMemo.photoURL), // picks the image url
+      //                Image.network(feedPhotos.photoURL),
+      //           ),
+      //         ],
+      //       ),
+
+      //       Text(
+      //         'Created By: ${feedPhotos.createdBy}',
+      //         style: TextStyle(fontSize: 16), // display notes memo
+      //       ),
+      //     ],
+      //   ),
+      // ),
     );
   }
 }
