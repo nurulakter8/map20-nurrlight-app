@@ -37,7 +37,7 @@ class _MoreInfoState extends State<MoreInfoScreen> {
   @override
   Widget build(BuildContext context) {
     Map args = ModalRoute.of(context).settings.arguments;
-    user ??= args['user'];
+    user ??= args['users'];
     feedPhotos ??= args['feedPhotoList'];
 
     return Scaffold(

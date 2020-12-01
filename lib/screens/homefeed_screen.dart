@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nurrlight/controller/authmethods_controller.dart';
 import 'package:nurrlight/controller/constants.dart';
+import 'package:nurrlight/controller/helper_controller.dart';
 import 'package:nurrlight/model/feedphotos.dart';
 import 'package:nurrlight/model/user.dart';
 import 'package:nurrlight/screens/add_screen.dart';
@@ -21,7 +22,7 @@ class HomeFeedScreen extends StatefulWidget {
 class _HomeState extends State<HomeFeedScreen> {
   _Controller con;
   AuthMethodsController authMethodsController = new AuthMethodsController();
-  User user1 = new User();
+  //User user1 = new User();
   FirebaseUser user;
   List<FeedPhotos> feedPhotos;
 
@@ -36,7 +37,7 @@ class _HomeState extends State<HomeFeedScreen> {
   @override
   Widget build(BuildContext context) {
     Map arg = ModalRoute.of(context).settings.arguments;
-    user1 ??= arg['user'];
+    user ??= arg['users'];
     feedPhotos ??= arg['feedPhotoList'];
 
     return WillPopScope(
@@ -195,14 +196,14 @@ class _Controller {
 
   void addButton() async {
     await Navigator.pushNamed(_state.context, AddScreen.routeName,
-        arguments: {'user': _state.user, 'feedPhotoList': _state.feedPhotos});
+        arguments: {'users': _state.user, 'feedPhotoList': _state.feedPhotos});
 
     _state.render(() {}); // redraw the screen
   }
 
   void moreInfo() async {
     Navigator.pushNamed(_state.context, MoreInfoScreen.routeName,
-        arguments: {'user': _state.user, 'feedPhotoList': _state.feedPhotos});
+        arguments: {'users': _state.user, 'feedPhotoList': _state.feedPhotos});
     _state.render(() {});
   }
 }

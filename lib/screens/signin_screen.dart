@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nurrlight/controller/authmethods_controller.dart';
+import 'package:nurrlight/controller/constants.dart';
 import 'package:nurrlight/controller/data_controller.dart';
 import 'package:nurrlight/controller/helper_controller.dart';
 import 'package:nurrlight/model/feedphotos.dart';
@@ -29,7 +30,8 @@ class _SignInState extends State<SignInScreen> {
   TextEditingController emailEditingController = new TextEditingController();
   TextEditingController passwordEditingController = new TextEditingController();
   QuerySnapshot snapshotUserInfo;
-  User user1 = new User();
+  // User user1 = new User();
+  FirebaseUser user;
 
   @override
   void initState() {
@@ -138,7 +140,7 @@ class _Controller {
   _Controller(this._state);
   String email; // valided ones will be there
   String password;
-  FirebaseUser user;
+  //FirebaseUser user;
 
   void signUp() {
     Navigator.pushNamed(_state.context, SignUpScreen.routeName);
@@ -161,7 +163,7 @@ class _Controller {
               _state.snapshotUserInfo.documents[0].data["name"]);
         });
 
-        user = await AuthMethodsController.signInWithEmailAndPassword(
+        _state.user = await AuthMethodsController.signInWithEmailAndPassword(
                 _state.emailEditingController.text,
                 _state.passwordEditingController.text)
             .then((result) async {
@@ -170,16 +172,16 @@ class _Controller {
             try {
               List<FeedPhotos> feedPhotos = await DataController.getPhotoMemos(
                   _state.emailEditingController.text);
-              print("+++++++++++++++++");
-              print(feedPhotos.toString());
+
               HelperFunctions.saveUserLoggedInSharedPreference(true);
 
               // go to home feed page
               Navigator.pushReplacementNamed(
                   _state.context, HomeFeedScreen.routeName, arguments: {
-                'user': _state.user1,
+                'users': _state.user,
                 'feedPhotoList': feedPhotos
               });
+              Constants.myName = await HelperFunctions.getUserNameSharedPreference();
             } catch (e) {
               MessageBox.info(
                 context: _state.context,
