@@ -2,13 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nurrlight/controller/authmethods_controller.dart';
 import 'package:nurrlight/controller/constants.dart';
-import 'package:nurrlight/controller/helper_controller.dart';
 import 'package:nurrlight/model/feedphotos.dart';
-import 'package:nurrlight/model/user.dart';
+import 'package:nurrlight/screens/about_screen.dart';
 import 'package:nurrlight/screens/add_screen.dart';
 import 'package:nurrlight/screens/moreinfo_screen.dart';
 import 'package:nurrlight/screens/search_screen.dart';
 import 'package:nurrlight/screens/signin_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeFeedScreen extends StatefulWidget {
   static const routeName = '/signInScreen/homeScreen';
@@ -25,7 +25,45 @@ class _HomeState extends State<HomeFeedScreen> {
   //User user1 = new User();
   FirebaseUser user;
   List<FeedPhotos> feedPhotos;
-  //var dollars = "$";
+  int selectedIndex = 0;
+
+  void onItemTapped(int index) {
+    setState(() {
+      selectedIndex = index;
+      //what button is pressed?
+      if (selectedIndex == 0) {
+        //adding
+        messages();
+      }
+      if (selectedIndex == 1) {
+        //adding
+        addPic();
+      }
+      if (selectedIndex == 2) {
+        //adding
+        browser();
+      }
+    });
+  }
+
+  void messages() async {
+    Navigator.pushNamed(context, SearchScreen.routeName);
+  }
+
+  void addPic() async {
+    Navigator.pushNamed(context, AddScreen.routeName,
+        arguments: {'users': user, 'feedPhotoList': feedPhotos});
+    render(() {});
+  }
+
+  void browser() async {
+    const url = 'https://www.pinterest.com/lisacravensstyle/canvas-ideas/';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   void initState() {
@@ -67,7 +105,7 @@ class _HomeState extends State<HomeFeedScreen> {
         ),
         drawer: Drawer(
           child: Container(
-            color: Colors.brown[300],
+            color: Colors.brown[200],
             child: ListView(
               children: <Widget>[
                 Container(
@@ -78,17 +116,15 @@ class _HomeState extends State<HomeFeedScreen> {
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 25),
                   ))),
-                  color: Colors.grey[400],
+                  color: Colors.brown[300],
                 ),
                 ListTile(
                   leading: Icon(
-                    Icons.message,
+                    Icons.email,
                     color: Colors.white,
                   ),
-                  title: Text('Messages'),
-                  onTap: () {
-                    Navigator.pushNamed(context, SearchScreen.routeName);
-                  },
+                  title: Text('Email'),
+                  onTap: con.email,
                 ),
                 ListTile(
                   leading: Icon(
@@ -96,7 +132,8 @@ class _HomeState extends State<HomeFeedScreen> {
                     color: Colors.white,
                   ),
                   title: Text('About'),
-                  onTap: () {}, // sprint 2
+                  onTap: () {Navigator.pushNamed(
+                        context, AboutScreen.routeName);}, // sprint 2
                 ),
                 ListTile(
                   leading: Icon(
@@ -113,11 +150,23 @@ class _HomeState extends State<HomeFeedScreen> {
             ),
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: con.addButton,
-          child: Icon(Icons.add),
-          foregroundColor: Colors.white,
-          backgroundColor: Colors.brown[300],
+        bottomNavigationBar: new BottomNavigationBar(
+          selectedItemColor: Color.fromRGBO(221, 90, 46, 1.0),
+          unselectedItemColor: Color.fromRGBO(13, 138, 137, 1.0),
+          items: [
+            new BottomNavigationBarItem(
+              icon: new Icon(Icons.message),
+              title: new Text('Messages'),
+            ),
+            new BottomNavigationBarItem(
+                icon: new Icon(Icons.add_a_photo),
+                title: new Text('addPicture')),
+            new BottomNavigationBarItem(
+                icon: new Icon(Icons.web), title: new Text('browser')),
+          ],
+          //include logic for color changing depending on index
+          currentIndex: selectedIndex,
+          onTap: onItemTapped,
         ),
         body: //Center(child: Text("Welcome!! Number of docs ${feedPhotos.length}",style: TextStyle(fontSize: 40),),),
             feedPhotos.length == 0
@@ -134,18 +183,12 @@ class _HomeState extends State<HomeFeedScreen> {
                       child: Card(
                         margin: EdgeInsets.all(20),
                         color: Colors.white,
-                        elevation: 30.0,
+                        elevation: 20.0,
                         // shape: RoundedRectangleBorder(
                         //   borderRadius: BorderRadius.all(10)),
                         //),
                         child: InkWell(
                           onTap: () {
-                            // Navigator.pushNamed(
-                            //     context, MoreInfoScreen.routeName,
-                            //     arguments: {
-                            //       'users': user,
-                            //       'feedPhotoList': feedPhotos
-                            //     });
                             con.moreInfo(index);
                           },
                           child: Column(
@@ -224,14 +267,14 @@ class _HomeState extends State<HomeFeedScreen> {
                                         if ((DateTime.now()
                                                 .difference(
                                                     feedPhotos[index].updatedAt)
-                                                .inDays) > 1
-                                            ) {
+                                                .inDays) >
+                                            1) {
                                           return '${(DateTime.now().difference(feedPhotos[index].updatedAt).inDays)} days ago';
                                         }
                                         if ((DateTime.now()
                                                 .difference(
                                                     feedPhotos[index].updatedAt)
-                                                .inHours) > 
+                                                .inHours) >
                                             1) {
                                           return '${(DateTime.now().difference(feedPhotos[index].updatedAt).inHours)} hours ago';
                                         }
@@ -284,5 +327,14 @@ class _Controller {
     Navigator.pushNamed(_state.context, MoreInfoScreen.routeName,
         arguments: {'users': _state.user, 'feedPhotoList': _state.feedPhotos});
     _state.render(() {});
+  }
+
+  void email() async {
+    const url = 'https://accounts.google.com/signin/v2/identifier?continue=https%3A%2F%2Fmail.google.com%2Fmail%2F&service=mail&sacu=1&rip=1&flowName=GlifWebSignIn&flowEntry=ServiceLogin';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }
