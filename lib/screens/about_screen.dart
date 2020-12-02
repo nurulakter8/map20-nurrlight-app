@@ -10,7 +10,7 @@ class AboutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Terms'),
+        title: Text('About us'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -30,6 +30,21 @@ class AboutScreen extends StatelessWidget {
               ],
             ),
             SizedBox(height: 19),
+            Wrap(
+              children: <Widget>[
+                Text('Founder: Nurul Akter', style: Theme.of(context).textTheme.bodyText1,),
+              ],
+            ),
+            SizedBox(height: 19),
+            Wrap(
+              children: <Widget>[
+                Text('Nurul Akter is the Head of Nurr Light where he oversees all functions of the business'
+                 'including engineering, product and operations. A designer at heart, Nurul is known for balancing sharp design'
+                 'thinking with thoughtful product strategy to create experiences that bring people together and encourage authentic communication.',
+                 style: Theme.of(context).textTheme.subtitle2, overflow: TextOverflow.clip, ),
+              ],
+            ),
+            SizedBox(height: 20),
             Wrap(
               children: <Widget>[
                 Text('The Data Policy', style: Theme.of(context).textTheme.bodyText1,),
